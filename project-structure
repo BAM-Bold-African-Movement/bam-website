@@ -1,0 +1,11 @@
+nodepay-clone/
+├── src/
+│   ├── components/
+│   │   ├── Navbar.js
+│   │   ├── Hero.js
+│   │   ├── Features.js
+│   │   ├── HowItWorks.js
+│   │   ├── Stats.js
+│   │   └── Footer.js
+│   ├── App.js
+│   └── index.js 
