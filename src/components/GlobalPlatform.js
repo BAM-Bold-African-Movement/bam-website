@@ -6,10 +6,10 @@ const GlobalPlatform = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-5xl font-bold text-white mb-6">
-            A Global Platform for Collective Intelligence
+            A Global Platform for blockchain african movement
           </h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Join a worldwide network of nodes contributing to a decentralized AI platform — processing millions of interactions and empowering innovation across various industries.
+          Join the African Bold Movement (BAM) and be part of a thriving community that champions diversity, collaboration, and innovation in Africa’s tech landscape. We are on a mission to drive transformation by empowering individuals, businesses, and communities with cutting-edge technology.
           </p>
         </div>
 
@@ -17,16 +17,16 @@ const GlobalPlatform = () => {
           {/* Global Nodes */}
           <div className="relative">
             <div className="text-5xl font-bold text-white mb-2">
-              1.8M
+              100k
               <span className="text-blue-500 ml-1">+</span>
             </div>
-            <p className="text-gray-400">Global Nodes</p>
+            <p className="text-gray-400">Events in Africa</p>
           </div>
 
           {/* Countries */}
           <div className="relative">
             <div className="text-5xl font-bold text-white mb-2">
-              180
+              54
               <span className="text-blue-500 ml-1">+</span>
             </div>
             <p className="text-gray-400">Countries</p>
@@ -35,7 +35,7 @@ const GlobalPlatform = () => {
           {/* Enterprise Partners */}
           <div className="relative">
             <div className="text-5xl font-bold text-white mb-2">
-              21
+              20
               <span className="text-blue-500 ml-1">+</span>
             </div>
             <p className="text-gray-400">Enterprise Partners</p>

@@ -6,88 +6,117 @@ const InvestorLogos = () => {
   const logos = [
     {
       id: 1,
-      src: "/img/investors/binance.png",
-      alt: "Binance"
+      src: "/assests/img/buni logo.png",
+      alt: "Buni",
     },
     {
       id: 2,
-      src: "/img/investors/coinbase.png",
-      alt: "Coinbase"
+      src: "/assests/img/klinkfinance_logo.jpeg",
+      alt: "Klink Finance",
     },
     {
       id: 3,
-      src: "/img/investors/kraken.png",
-      alt: "Kraken"
+      src: "/assests/img/sortedwallet_logo.png",
+      alt: "Sorted Wallet",
     },
     {
       id: 4,
-      src: "/img/investors/gemini.png",
-      alt: "Gemini"
+      src: "/assests/img/tether logo.png",
+      alt: "Tether",
     },
     {
       id: 5,
-      src: "/img/investors/ftx.png",
-      alt: "FTX"
-    }
+      src: "/assests/img/icp logo.png",
+      alt: "ICP",
+    },
+    {
+      id: 6,
+      src: "/assests/img/coin.png",
+      alt: "Coin",
+    },
+    {
+      id: 7,
+      src: "/assests/img/coderr.png",
+      alt: "Coderr",
+    },
+    {
+      id: 8,
+      src: "/assests/img/yelloww.png",
+      alt: "Yellow",
+    },
+    {
+      id: 9,
+      src: "/assests/img/exo.png",
+      alt: "Exo",
+    },
   ];
 
-  // Auto scroll every 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => {
         const nextIndex = prevIndex + 1;
         return nextIndex >= Math.ceil(logos.length / 5) ? 0 : nextIndex;
       });
-    }, 5000); // Changed to 5000ms (5 seconds)
+    }, 5000);
 
-    // Cleanup on component unmount
     return () => clearInterval(timer);
   }, [logos.length]);
+
+  // Calculate visible logos based on current index
+  const getVisibleLogos = () => {
+    const start = currentIndex * 5;
+    const visibleLogos = [...logos.slice(start), ...logos.slice(0, start)];
+    return visibleLogos;
+  };
 
   return (
     <div className="bg-black py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Why Investors Choose Us
+            Our Partners
           </h2>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-            Trusted by industry leaders who believe in decentralizing AI to empower individuals, foster innovation, and build a future where AI benefits everyone.
+            Collaborating with leading institutions to empower African tech innovation and foster growth in the ecosystem.
           </p>
         </div>
         
         <div className="relative overflow-hidden">
-          {/* Logo Carousel */}
-          <div 
-            className="flex transition-transform duration-1000 ease-in-out"
-            style={{
-              transform: `translateX(-${currentIndex * 100}%)`,
-            }}
-          >
-            <div className="flex min-w-full justify-between items-center px-8">
-              {logos.map((logo) => (
+          <div className="flex transition-transform duration-1000 ease-in-out">
+            <div className="flex flex-nowrap gap-16 min-w-full px-8 justify-center items-center">
+              {getVisibleLogos().map((logo) => (
                 <div 
                   key={logo.id}
-                  className="w-28 h-16 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
+                  className="flex-shrink-0 flex items-center justify-center hover:scale-110 transition-all duration-300"
+                  style={{
+                    width: '200px',  // Fixed width container
+                    height: '100px'  // Fixed height container
+                  }}
                 >
                   <img
                     src={logo.src}
                     alt={logo.alt}
-                    className="max-w-full max-h-full object-contain brightness-0 invert"
+                    className="object-contain w-full h-full"
+                    style={{ 
+                      filter: 'none',
+                      mixBlendMode: 'normal',
+                      maxWidth: '160px',    // Maximum width for the image
+                      maxHeight: '80px',    // Maximum height for the image
+                      margin: 'auto'        // Center the image in container
+                    }}
                   />
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Navigation Dots */}
-          <div className="flex justify-center mt-8 space-x-2">
+          <div className="flex justify-center mt-8 space-x-3">
             {Array.from({ length: Math.ceil(logos.length / 5) }).map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`w-2 h-2 rounded-full transition-colors duration-200 ${
-                  currentIndex === index ? 'bg-white' : 'bg-gray-600'
+                className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+                  currentIndex === index ? 'bg-yellow-500' : 'bg-gray-600'
                 }`}
               />
             ))}

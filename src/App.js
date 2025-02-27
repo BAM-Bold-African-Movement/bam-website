@@ -1,75 +1,26 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import WhatIsBam from './components/WhatIsBam';
-import Services from './components/Services';
-import Features from './components/Features';
-import GlobalPlatform from './components/GlobalPlatform';
-import InvestorLogos from './components/InvestorLogos';
+import Navbar from './components/Layout/Navbar';
+import MainContent from './components/MainContent';
 import Blog from './components/Blog';
-import Footer from './components/Footer';
 import Login from './components/Auth/Login';
-import ProtectedRoute from './components/Auth/ProtectedRoute';
 import Dashboard from './components/Dashboard/Dashboard';
-
-const MainContent = () => {
-  const heroRef = useRef(null);
-  const featuresRef = useRef(null);
-  const servicesRef = useRef(null);
-  const contactRef = useRef(null);
-
-  const scrollToSection = (ref) => {
-    ref.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  return (
-    <>
-      <Navbar 
-        onHomeClick={() => scrollToSection(heroRef)}
-        onFeaturesClick={() => scrollToSection(featuresRef)}
-        onServicesClick={() => scrollToSection(servicesRef)}
-        onContactClick={() => scrollToSection(contactRef)}
-      />
-      <div ref={heroRef}>
-        <Hero />
-      </div>
-      <WhatIsBam />
-      <div ref={servicesRef}>
-        <Services />
-      </div>
-      <div ref={featuresRef}>
-        <Features />
-      </div>
-      <GlobalPlatform />
-      <InvestorLogos />
-      <div ref={contactRef}>
-        <Footer />
-      </div>
-    </>
-  );
-};
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-black">
+      <div className="min-h-screen bg-gray-900">
         <Routes>
-          <Route path="/" element={<MainContent />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/blog" element={
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="*" element={
             <>
               <Navbar />
-              <Blog />
-              <Footer />
+              <Routes>
+                <Route path="/" element={<MainContent />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/login" element={<Login />} />
+              </Routes>
             </>
-          } />
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <Navbar />
-              <Dashboard />
-              <Footer />
-            </ProtectedRoute>
           } />
         </Routes>
       </div>
