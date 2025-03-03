@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import TransactionWrapper from '../Wallet/TransactionWrapper';
+import WalletWrapper from '../Wallet/WalletWrapper';
+import { useAccount } from 'wagmi';
+import LoginButton from '../Wallet/LoginButton';
+import SignupButton from '../Wallet/SignupButton';
 
 const Navbar = () => {
   const location = useLocation();
   const [activeSection, setActiveSection] = useState('home');
+  const { address } = useAccount();
 
   const scrollToSection = (sectionId) => {
     setActiveSection(sectionId);
@@ -118,13 +124,24 @@ const Navbar = () => {
               Contact
               <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-500 transform transition-transform duration-300 ${activeSection === 'footer' ? 'scale-x-100' : 'scale-x-0'}`} />
             </button>
+            {/*
             
             <Link 
               to="/login"
               className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-colors duration-300 font-medium"
             >
               Login
-            </Link>
+            </Link> 
+            
+            */}
+            <section className="mt-6 mb-6 flex w-full flex-col md:flex-row">
+              <div className="flex w-full flex-row items-center justify-between gap-2 md:gap-0">
+                <div className="flex items-center gap-3">
+                  <SignupButton />
+                  {!address && <LoginButton />}
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </div>

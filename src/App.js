@@ -5,6 +5,9 @@ import MainContent from './components/MainContent';
 import Blog from './components/Blog';
 import Login from './components/Auth/Login';
 import Dashboard from './components/Dashboard/Dashboard';
+import DonationPage from './page/donation/DonationPage';
+import NftMintPage from './page/donation/NftMintPage';
+import ConfirmationPage from './page/donation/ConfirmationPage';
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
                 <Route path="/" element={<MainContent />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/donations" element={<DonationPage />} />
+                <Route path="/mint-nft" element={<NftMintPage />} />
+                <Route path="/confirmation" element={<ConfirmationPage />} />
               </Routes>
             </>
           } />
