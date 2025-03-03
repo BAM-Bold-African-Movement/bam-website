@@ -10,7 +10,7 @@ import {
   BASE_SEPOLIA_CHAIN_ID,
   mintABI,
   mintContractAddress,
-} from '../constants';
+} from '../../utils/constants';
 
 export default function TransactionWrapper({ address }) {
   const contracts = [
