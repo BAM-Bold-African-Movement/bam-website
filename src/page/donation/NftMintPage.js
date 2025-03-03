@@ -4,7 +4,6 @@ import { ConnectWallet, Wallet } from "@coinbase/onchainkit/wallet";
 import { useAccount } from 'wagmi';
 import { SERVER_URL } from '../../utils/config';
 
-
 export default function NftMintPage() {
   const [email, setEmail] = useState('');
   const [eligibilityChecked, setEligibilityChecked] = useState(false);
@@ -162,128 +161,206 @@ export default function NftMintPage() {
   };
 
   return (
-    <div className="nft-mint-page">
-      <h1>Mint Your Donor NFT</h1>
-      
-      {error && <div className="error-message">{error}</div>}
-      {success && <div className="success-message">{success}</div>}
-      
-      {!eligibilityChecked ? (
-        <div className="check-eligibility-form">
-          <p>Enter the email you used for your donation to check eligibility:</p>
-          <form onSubmit={checkEligibility}>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email address"
-              required
-            />
-            <button type="submit">Check Eligibility</button>
-          </form>
-        </div>
-      ) : eligibilityData?.eligible ? (
-        <div className="mint-container">
-          {!isWhitelisted ? (
-            <>
-              <div className="donation-selection">
-                <h3>Select Donation to Mint NFT For:</h3>
-                <div className="donation-list">
-                  {eligibilityData.donations
-                    .filter(d => !d.nftMinted)
-                    .map(donation => (
-                      <div 
-                        key={donation.id}
-                        className={`donation-item ${selectedDonation === donation.id ? 'selected' : ''}`}
-                        onClick={() => setSelectedDonation(donation.id)}
-                      >
-                        <p>Donation of ${donation.amount.toFixed(2)}</p>
-                        <p>Date: {new Date(donation.timestamp.seconds * 1000).toLocaleDateString()}</p>
-                      </div>
-                    ))}
-                </div>
-              </div>
-              
-              <div className="chain-selection">
-                <h3>Select Blockchain:</h3>
-                <div className="chain-list">
-                  {chains.map(chain => (
-                    <div
-                      key={chain.id}
-                      className={`chain-item ${selectedChain === chain.id ? 'selected' : ''}`}
-                      onClick={() => setSelectedChain(chain.id)}
-                    >
-                      <img src={chain.icon} alt={chain.name} />
-                      <p>{chain.name}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="wallet-connect">
-                <h3>Connect Your Wallet:</h3>
-                <Wallet>
-                  <ConnectWallet />
-                </Wallet>
-                
-                {address && (
-                  <div className="connected-wallet">
-                    <p>Connected: {address.slice(0, 6)}...{address.slice(-4)}</p>
-                  </div>
-                )}
-                
+    <div className="flex flex-row min-h-screen justify-center items-center bg-gray-50 py-8 px-4">
+      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="p-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">Mint Your Donor NFT</h1>
+          
+          {error && (
+            <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+              {error}
+            </div>
+          )}
+          
+          {success && (
+            <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
+              {success}
+            </div>
+          )}
+          
+          {!eligibilityChecked ? (
+            <div className="bg-blue-50 border border-blue-100 rounded-xl p-6 mb-8">
+              <p className="text-lg text-gray-700 mb-4">Enter the email you used for your donation to check eligibility:</p>
+              <form onSubmit={checkEligibility} className="space-y-4">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email address"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
                 <button 
-                  onClick={whitelistWallet} 
-                  disabled={!address || !selectedDonation || !selectedChain}
-                  className="whitelist-button"
+                  type="submit" 
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200"
                 >
-                  Whitelist Wallet
+                  Check Eligibility
                 </button>
-              </div>
-            </>
-          ) : (
-            <div className="mint-nft-section">
-              <h3>Mint Your Donor NFT</h3>
-              <p>Your wallet {address.slice(0, 6)}...{address.slice(-4)} is now whitelisted to mint!</p>
-              
-              {mintingStatus === 'idle' && (
-                <button onClick={simulateMint} className="mint-button">
-                  Mint NFT
-                </button>
-              )}
-              
-              {mintingStatus === 'minting' && (
-                <div className="minting-status">
-                  <p>Minting in progress...</p>
-                  <div className="spinner"></div>
-                </div>
-              )}
-              
-              {mintingStatus === 'success' && (
-                <div className="minting-success">
-                  <p>NFT Minted Successfully!</p>
-                  <p>Transaction: {txHash.slice(0, 6)}...{txHash.slice(-4)}</p>
-                  <p>Redirecting to confirmation page...</p>
-                </div>
-              )}
-              
-              {mintingStatus === 'error' && (
-                <div className="minting-error">
-                  <p>Error minting NFT. Please try again.</p>
-                  <button onClick={simulateMint} className="retry-button">
-                    Retry
-                  </button>
+              </form>
+            </div>
+          ) : eligibilityData?.eligible ? (
+            <div className="space-y-8">
+              {!isWhitelisted ? (
+                <>
+                  <div className="bg-white border border-gray-200 rounded-xl p-6">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-4">Select Donation to Mint NFT For:</h3>
+                    <div className="space-y-3">
+                      {eligibilityData.donations
+                        .filter(d => !d.nftMinted)
+                        .map(donation => (
+                          <div 
+                            key={donation.id}
+                            className={`p-4 rounded-lg cursor-pointer transition-all duration-200 ${
+                              selectedDonation === donation.id 
+                                ? 'bg-blue-100 border-2 border-blue-500' 
+                                : 'bg-gray-50 border border-gray-200 hover:border-blue-300'
+                            }`}
+                            onClick={() => setSelectedDonation(donation.id)}
+                          >
+                            <div className="flex justify-between items-center">
+                              <p className="font-medium text-gray-800">Donation of ${donation.amount.toFixed(2)}</p>
+                              <p className="text-gray-500 text-sm">
+                                {new Date(donation.timestamp.seconds * 1000).toLocaleDateString()}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white border border-gray-200 rounded-xl p-6">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-4">Select Blockchain:</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {chains.map(chain => (
+                        <div
+                          key={chain.id}
+                          className={`p-4 rounded-lg cursor-pointer transition-all duration-200 flex flex-col items-center ${
+                            selectedChain === chain.id 
+                              ? 'bg-blue-100 border-2 border-blue-500' 
+                              : 'bg-gray-50 border border-gray-200 hover:border-blue-300'
+                          }`}
+                          onClick={() => setSelectedChain(chain.id)}
+                        >
+                          <div className="w-12 h-12 mb-2 flex items-center justify-center">
+                            {chain.icon ? (
+                              <img src={chain.icon} alt={chain.name} className="max-w-full max-h-full" />
+                            ) : (
+                              <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-bold">
+                                {chain.name.charAt(0)}
+                              </div>
+                            )}
+                          </div>
+                          <p className="text-center text-sm font-medium">{chain.name}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white border border-gray-200 rounded-xl p-6">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-4">Connect Your Wallet:</h3>
+                    <div className="mb-6">
+                      <Wallet>
+                        <ConnectWallet className="w-full" />
+                      </Wallet>
+                    </div>
+                    
+                    {address && (
+                      <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
+                        <p className="text-blue-800">
+                          Connected: <span className="font-medium">{address.slice(0, 6)}...{address.slice(-4)}</span>
+                        </p>
+                      </div>
+                    )}
+                    
+                    <button 
+                      onClick={whitelistWallet} 
+                      disabled={!address || !selectedDonation || !selectedChain}
+                      className={`w-full py-3 px-4 rounded-lg font-medium transition duration-200 ${
+                        !address || !selectedDonation || !selectedChain
+                          ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                          : 'bg-blue-600 hover:bg-blue-700 text-white'
+                      }`}
+                    >
+                      Whitelist Wallet
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="bg-white border border-gray-200 rounded-xl p-8">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-6">Mint Your Donor NFT</h3>
+                  <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
+                    <p className="text-blue-800">
+                      Your wallet <span className="font-medium">{address.slice(0, 6)}...{address.slice(-4)}</span> is now whitelisted to mint!
+                    </p>
+                  </div>
+                  
+                  {mintingStatus === 'idle' && (
+                    <button 
+                      onClick={simulateMint} 
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200"
+                    >
+                      Mint NFT
+                    </button>
+                  )}
+                  
+                  {mintingStatus === 'minting' && (
+                    <div className="text-center py-8">
+                      <div className="inline-block w-12 h-12 border-4 border-t-blue-600 border-blue-200 rounded-full animate-spin mb-4"></div>
+                      <p className="text-lg text-gray-700">Minting in progress...</p>
+                    </div>
+                  )}
+                  
+                  {mintingStatus === 'success' && (
+                    <div className="text-center py-8">
+                      <div className="mb-4 text-green-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <h4 className="text-xl font-semibold text-gray-800 mb-2">NFT Minted Successfully!</h4>
+                      <p className="text-gray-600 mb-2">Transaction: {txHash.slice(0, 6)}...{txHash.slice(-4)}</p>
+                      <p className="text-sm text-gray-500">Redirecting to confirmation page...</p>
+                    </div>
+                  )}
+                  
+                  {mintingStatus === 'error' && (
+                    <div className="text-center py-8">
+                      <div className="mb-4 text-red-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <h4 className="text-xl font-semibold text-gray-800 mb-4">Error minting NFT</h4>
+                      <button 
+                        onClick={simulateMint} 
+                        className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-lg transition duration-200"
+                      >
+                        Retry
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
+          ) : (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-8 text-center">
+              <div className="mb-4 text-red-500">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">Not Eligible</h3>
+              <p className="text-gray-700 mb-6">Sorry, you're not eligible to mint an NFT. {eligibilityData?.reason}</p>
+              <button 
+                onClick={() => navigate('/')} 
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition duration-200"
+              >
+                Donate Now
+              </button>
+            </div>
           )}
         </div>
-      ) : (
-        <div className="not-eligible">
-          <p>Sorry, you're not eligible to mint an NFT. {eligibilityData?.reason}</p>
-          <button onClick={() => navigate('/')}>Donate Now</button>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
