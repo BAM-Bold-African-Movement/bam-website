@@ -44,8 +44,8 @@ export default function WalletWrapper({
             <EthBalance />
           </Identity>
           <WalletDropdownBasename />
-          <WalletDropdownLink icon="wallet" href="https://wallet.coinbase.com">
-            Go to Wallet Dashboard
+          <WalletDropdownLink icon="wallet" href="/donations">
+            Donate
           </WalletDropdownLink>
           <WalletDropdownFundLink />
           <WalletDropdownDisconnect />

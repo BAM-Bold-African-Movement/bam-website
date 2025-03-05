@@ -1,4 +1,6 @@
 import React from 'react';
+import '@coinbase/onchainkit/styles.css';
+import '@rainbow-me/rainbowkit/styles.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Layout/Navbar';
 import MainContent from './components/MainContent';
