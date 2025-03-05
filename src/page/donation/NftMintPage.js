@@ -5,6 +5,7 @@ import { useAccount } from 'wagmi';
 import { SERVER_URL } from '../../utils/config';
 
 export default function NftMintPage() {
+  /*
   const [email, setEmail] = useState('');
   const [eligibilityChecked, setEligibilityChecked] = useState(false);
   const [eligibilityData, setEligibilityData] = useState(null);
@@ -159,6 +160,7 @@ export default function NftMintPage() {
         });
     }, 3000); // Simulate 3 second minting process
   };
+  */
 
   return (
     <div className="flex flex-row min-h-screen justify-center items-center bg-gray-50 py-8 px-4">
@@ -166,6 +168,20 @@ export default function NftMintPage() {
         <div className="p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">Mint Your Donor NFT</h1>
           
+          {/* Coming Soon Message */}
+          <div className="py-16 text-center">
+            <div className="mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 mx-auto text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Coming Soon</h2>
+            <p className="text-lg text-gray-600 max-w-md mx-auto">
+              We're working on bringing you an amazing NFT minting experience. Please check back later!
+            </p>
+          </div>
+          
+          {/*
           {error && (
             <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
               {error}
@@ -359,6 +375,7 @@ export default function NftMintPage() {
               </button>
             </div>
           )}
+          */}
         </div>
       </div>
     </div>
