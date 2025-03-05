@@ -29,11 +29,11 @@ function createWagmiConfig() {
       [
         {
           groupName: 'Recommended Wallet',
-          wallets: [ metaMaskWallet, coinbaseWallet  ],
+          wallets: [ coinbaseWallet ],
         },
         {
           groupName: 'Other Wallets',
-          wallets: [rainbowWallet],
+          wallets: [rainbowWallet, metaMaskWallet],
         },
       ],
       {
