@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.2.0...v1.2.1) (2025-03-05)
+
+
+### Bug Fixes
+
+* responsive navbar and hero section ([34b1335](https://github.com/BAM-Bold-African-Movement/bam-website/commit/34b133512087355c2bc377259be675576817740a))
+
 # [1.2.0](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.1.0...v1.2.0) (2025-03-05)
 
 
