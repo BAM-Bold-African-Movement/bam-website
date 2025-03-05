@@ -1,11 +1,16 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Checkout, CheckoutButton, CheckoutStatus } from '@coinbase/onchainkit/checkout';
+import { CDP_API_KEY } from '../../utils/config';
 
 const PaymentDetailsForm = ({ 
     donorName, 
     email, 
     calculateAmount, 
-    setStep 
+    chargeId 
   }) => {
+    const navigate = useNavigate();
+  
     return (
       <div className="max-w-lg mx-auto bg-white rounded-lg shadow-sm p-8">
         <div className="flex items-center mb-6">
@@ -25,21 +30,14 @@ const PaymentDetailsForm = ({
         
         <div className="border border-gray-300 rounded-lg p-6 mb-6">
           <h3 className="text-lg font-semibold mb-4">Payment Method</h3>
-          <p className="text-gray-600">Payment processing components would be integrated here.</p>
-        </div>
-        
-        <div className="flex space-x-4">
-          <button 
-            onClick={() => setStep('details')} 
-            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+          <Checkout
+            apiKey={CDP_API_KEY}
+            chargeId={chargeId}
+            onSuccess={() => navigate(`/payment-processing/${chargeId}`)}
           >
-            Back
-          </button>
-          <button 
-            className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Complete Donation
-          </button>
+            <CheckoutButton />
+            <CheckoutStatus />
+          </Checkout>
         </div>
       </div>
     );

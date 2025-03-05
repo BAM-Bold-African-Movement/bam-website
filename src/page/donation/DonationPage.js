@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useParams } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from '../../utils/config';
 import { Link } from 'react-router-dom';
 import DonationDetailsForm from '../../components/Donation/DonationDetails';
@@ -12,6 +14,8 @@ export default function DonationPage() {
   const [email, setEmail] = useState('');
   const [step, setStep] = useState('details'); // 'details' or 'payment'
   const [error, setError] = useState('');
+  const [chargeId, setChargeId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch donation options
@@ -64,9 +68,29 @@ export default function DonationPage() {
     return true;
   };
 
-  const handleProceedToPayment = () => {
+  const handleProceedToPayment = async () => {
     if (validateForm()) {
-      setStep('payment');
+      try {
+        // Create charge
+        const amount = calculateAmount();
+        const response = await axios.post(`${SERVER_URL}/v1/api/create-charge`, {
+          amount,
+          metadata: {
+            donorName,
+            email
+          }
+        });
+
+        if (response.data.chargeId) {
+          setChargeId(response.data.chargeId);
+          setStep('payment');
+        } else {
+          setError('Failed to create charge. Please try again.');
+        }
+      } catch (err) {
+        console.error('Error creating charge:', err);
+        setError('Failed to create charge. Please try again.');
+      }
     }
   };
 
@@ -113,7 +137,7 @@ export default function DonationPage() {
             donorName={donorName}
             email={email}
             calculateAmount={calculateAmount}
-            setStep={setStep}
+            chargeId={chargeId}
           />
         )}
       </div>
