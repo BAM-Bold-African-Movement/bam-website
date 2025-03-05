@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.1.0...v1.2.0) (2025-03-05)
+
+
+### Bug Fixes
+
+* wallet now works, donation with basesepolio works ([afb42bd](https://github.com/BAM-Bold-African-Movement/bam-website/commit/afb42bd9841aedf021ea49ff048b13dd4486e297))
+
+
+### Features
+
+* clean donation page, by creating components for it ([62b75a8](https://github.com/BAM-Bold-African-Movement/bam-website/commit/62b75a8be99e3c7554fd4fc5afdba3e873653edc))
+
 # [1.1.0](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.0.0...v1.1.0) (2025-03-03)
 
 
