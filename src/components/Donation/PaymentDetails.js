@@ -33,7 +33,7 @@ const PaymentDetailsForm = ({
           <Checkout
             apiKey={CDP_API_KEY}
             chargeId={chargeId}
-            onSuccess={() => navigate(`/payment-processing/${chargeId}`)}
+            onSuccess={() => navigate(`/mint-nft/${chargeId}`)}
           >
             <CheckoutButton />
             <CheckoutStatus />

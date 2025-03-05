@@ -8,6 +8,7 @@ import { CDP_API_KEY, WC_PROJECT_ID } from '../../utils/config';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import {
   coinbaseWallet,
+  walletConnectWallet,
   metaMaskWallet,
   rainbowWallet,
 } from '@rainbow-me/rainbowkit/wallets';
@@ -25,21 +26,21 @@ function createWagmiConfig() {
   }
 
   const connectors = connectorsForWallets(
-    [
+      [
+        {
+          groupName: 'Recommended Wallet',
+          wallets: [metaMaskWallet],
+        },
+        {
+          groupName: 'Other Wallets',
+          wallets: [rainbowWallet ,coinbaseWallet],
+        },
+      ],
       {
-        groupName: 'Recommended Wallet',
-        wallets: [coinbaseWallet],
+        appName: 'onchainkit',
+        projectId,
       },
-      {
-        groupName: 'Other Wallets',
-        wallets: [rainbowWallet, metaMaskWallet],
-      },
-    ],
-    {
-      appName: 'onchainkit',
-      projectId,
-    },
-  );
+    );
 
   return createConfig({
     chains: [base, baseSepolia],
@@ -61,7 +62,7 @@ function OnchainProviders({ children }) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <OnchainKitProvider apiKey={CDP_API_KEY} chain={base}>
+        <OnchainKitProvider apiKey={CDP_API_KEY} chain={baseSepolia}>
           <RainbowKitProvider modalSize="compact">
             {children}
           </RainbowKitProvider>
