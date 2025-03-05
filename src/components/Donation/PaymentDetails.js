@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Checkout, CheckoutButton, CheckoutStatus } from '@coinbase/onchainkit/checkout';
 import { CDP_API_KEY } from '../../utils/config';
+import { useAccount, useProvider } from 'wagmi';
 
 const PaymentDetailsForm = ({ 
     donorName, 
@@ -10,7 +11,18 @@ const PaymentDetailsForm = ({
     chargeId 
   }) => {
     const navigate = useNavigate();
-  
+    const { address, isConnected, connector } = useAccount();
+    const provider = connector.getProvider;
+
+    // Ensure wallet is connected before rendering checkout
+    if (!isConnected || !address) {
+      return (
+        <div className="text-center p-6">
+          Please connect your wallet first
+        </div>
+      );
+    }
+
     return (
       <div className="max-w-lg mx-auto bg-white rounded-lg shadow-sm p-8">
         <div className="flex items-center mb-6">
@@ -33,10 +45,14 @@ const PaymentDetailsForm = ({
           <Checkout
             apiKey={CDP_API_KEY}
             chargeId={chargeId}
+            address={address}
+            provider={provider}
             onSuccess={() => navigate(`/mint-nft/${chargeId}`)}
           >
             <CheckoutButton />
+            {/*
             <CheckoutStatus />
+            */}
           </Checkout>
         </div>
       </div>

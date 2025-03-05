@@ -29,15 +29,15 @@ function createWagmiConfig() {
       [
         {
           groupName: 'Recommended Wallet',
-          wallets: [metaMaskWallet],
+          wallets: [ metaMaskWallet, coinbaseWallet  ],
         },
         {
           groupName: 'Other Wallets',
-          wallets: [rainbowWallet ,coinbaseWallet],
+          wallets: [rainbowWallet],
         },
       ],
       {
-        appName: 'onchainkit',
+        appName: 'BAM',
         projectId,
       },
     );
@@ -62,7 +62,9 @@ function OnchainProviders({ children }) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <OnchainKitProvider apiKey={CDP_API_KEY} chain={baseSepolia}>
+        <OnchainKitProvider 
+            apiKey={CDP_API_KEY} 
+            chain={baseSepolia}>
           <RainbowKitProvider modalSize="compact">
             {children}
           </RainbowKitProvider>
