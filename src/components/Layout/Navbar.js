@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import TransactionWrapper from '../Wallet/TransactionWrapper';
-import WalletWrapper from '../Wallet/WalletWrapper';
 import { useAccount } from 'wagmi';
 import LoginButton from '../Wallet/LoginButton';
 import SignupButton from '../Wallet/SignupButton';
+import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const location = useLocation();
   const [activeSection, setActiveSection] = useState('home');
   const { address } = useAccount();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const scrollToSection = (sectionId) => {
     setActiveSection(sectionId);
+    setIsMobileMenuOpen(false);
+    
     if (location.pathname !== '/') {
       window.location.href = `/#${sectionId}`;
     } else {
@@ -59,9 +61,21 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const NavItem = ({ onClick, active, children, className = '' }) => (
+    <button 
+      onClick={onClick}
+      className={`text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 py-2 px-3 relative w-full text-left md:text-center md:w-auto
+        ${active ? 'text-gray-900' : ''} ${className}`}
+    >
+      {children}
+      <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-500 transform transition-transform duration-300 
+        ${active ? 'scale-x-100' : 'scale-x-0'}`} />
+    </button>
+  );
+
   return (
     <nav className="bg-white shadow-lg fixed w-full z-50">
-      <div className="max-w-7xl mx-auto px-8 sm:px-10 lg:px-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           {/* Logo Section */}
           <div className="flex items-center">
@@ -78,34 +92,39 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Navigation Links */}
-          <div className="flex items-center space-x-8">
+          {/* Mobile Menu Toggle - ONLY visible on mobile screens */}
+          <div className="flex items-center md:!hidden">
             <button 
-              onClick={() => scrollToSection('home')}
-              className={`text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 py-2 px-3 relative
-                ${activeSection === 'home' ? 'text-gray-900' : ''}`}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-gray-600 hover:text-gray-900"
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+
+          {/* Desktop Navigation Links - ONLY visible on desktop */}
+          <div className="hidden md:!flex items-center space-x-4 lg:space-x-8">
+            <NavItem 
+              onClick={() => scrollToSection('home')} 
+              active={activeSection === 'home'}
             >
               Home
-              <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-500 transform transition-transform duration-300 ${activeSection === 'home' ? 'scale-x-100' : 'scale-x-0'}`} />
-            </button>
+            </NavItem>
             
-            <button 
-              onClick={() => scrollToSection('features')}
-              className={`text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 py-2 px-3 relative
-                ${activeSection === 'features' ? 'text-gray-900' : ''}`}
+            <NavItem 
+              onClick={() => scrollToSection('features')} 
+              active={activeSection === 'features'}
             >
               Features
-              <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-500 transform transition-transform duration-300 ${activeSection === 'features' ? 'scale-x-100' : 'scale-x-0'}`} />
-            </button>
+            </NavItem>
             
-            <button 
-              onClick={() => scrollToSection('services')}
-              className={`text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 py-2 px-3 relative
-                ${activeSection === 'services' ? 'text-gray-900' : ''}`}
+            <NavItem 
+              onClick={() => scrollToSection('services')} 
+              active={activeSection === 'services'}
             >
               Services
-              <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-500 transform transition-transform duration-300 ${activeSection === 'services' ? 'scale-x-100' : 'scale-x-0'}`} />
-            </button>
+            </NavItem>
             
             <Link 
               to="/blog" 
@@ -116,37 +135,76 @@ const Navbar = () => {
               <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-500 transform transition-transform duration-300 ${location.pathname === '/blog' ? 'scale-x-100' : 'scale-x-0'}`} />
             </Link>
             
-            <button 
-              onClick={() => scrollToSection('footer')}
-              className={`text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 py-2 px-3 relative
-                ${activeSection === 'footer' ? 'text-gray-900' : ''}`}
+            <NavItem 
+              onClick={() => scrollToSection('footer')} 
+              active={activeSection === 'footer'}
             >
               Contact
-              <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-500 transform transition-transform duration-300 ${activeSection === 'footer' ? 'scale-x-100' : 'scale-x-0'}`} />
-            </button>
-            {/*
-            
-            <Link 
-              to="/login"
-              className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-colors duration-300 font-medium"
-            >
-              Login
-            </Link> 
-            
-            */}
-            <section className="mt-6 mb-6 flex w-full flex-col md:flex-row">
-              <div className="flex w-full flex-row items-center justify-between gap-2 md:gap-0">
-                <div className="flex items-center gap-3">
-                  <SignupButton />
-                  {!address && <LoginButton />}
-                </div>
-              </div>
-            </section>
+            </NavItem>
+
+            <div className="flex items-center gap-2 lg:gap-3">
+              <SignupButton />
+              {!address && <LoginButton />}
+            </div>
           </div>
         </div>
+
+        {/* Mobile Menu Dropdown - Only visible when menu is open AND on mobile */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden py-2 absolute left-0 right-0 bg-white shadow-lg border-t">
+            <div className="flex flex-col items-start px-4">
+              <NavItem 
+                onClick={() => scrollToSection('home')} 
+                active={activeSection === 'home'}
+                className="py-3 border-b border-gray-100 w-full"
+              >
+                Home
+              </NavItem>
+              
+              <NavItem 
+                onClick={() => scrollToSection('features')} 
+                active={activeSection === 'features'}
+                className="py-3 border-b border-gray-100 w-full"
+              >
+                Features
+              </NavItem>
+              
+              <NavItem 
+                onClick={() => scrollToSection('services')} 
+                active={activeSection === 'services'}
+                className="py-3 border-b border-gray-100 w-full"
+              >
+                Services
+              </NavItem>
+              
+              <Link 
+                to="/blog" 
+                className={`text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 py-3 border-b border-gray-100 w-full relative
+                  ${location.pathname === '/blog' ? 'text-gray-900' : ''}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Blog
+                <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-500 transform transition-transform duration-300 ${location.pathname === '/blog' ? 'scale-x-100' : 'scale-x-0'}`} />
+              </Link>
+              
+              <NavItem 
+                onClick={() => scrollToSection('footer')} 
+                active={activeSection === 'footer'}
+                className="py-3 border-b border-gray-100 w-full mb-2"
+              >
+                Contact
+              </NavItem>
+
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 my-4 w-full">
+                <SignupButton />
+                {!address && <LoginButton />}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
 };
 
-export default Navbar; 
+export default Navbar;
