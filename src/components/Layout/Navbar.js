@@ -143,8 +143,7 @@ const Navbar = () => {
             </NavItem>
 
             <div className="flex items-center gap-2 lg:gap-3">
-              <SignupButton />
-              {!address && <LoginButton />}
+               <LoginButton />
             </div>
           </div>
         </div>

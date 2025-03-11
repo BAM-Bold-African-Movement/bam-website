@@ -129,6 +129,7 @@ export default function DonationPage() {
             email={email}
             setEmail={setEmail}
             error={error}
+            setError={setError}
             handleProceedToPayment={handleProceedToPayment}
             handleCustomAmountChange={handleCustomAmountChange}
           />
