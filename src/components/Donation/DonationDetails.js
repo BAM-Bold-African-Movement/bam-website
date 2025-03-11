@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAccount, useChains } from 'wagmi';
+import { useAccount, useNetwork } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useNativeDonation, useTokenDonation } from '../../services/donationService';
 import { 
@@ -12,14 +12,16 @@ import { useWalletTokens } from '../../hooks/useWalletTokens';
 
 const DonationDetailsForm = () => {
   // User account state
-  const { address, isConnected } = useAccount();
-  const { chain } = useChains();
+  const { address, isConnected, chain } = useAccount();
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   
   // User info state
+  // Commented out name and email fields
+  /*
   const [donorName, setDonorName] = useState("");
   const [email, setEmail] = useState("");
+  */
   
   // Token selection and amount state
   const [selectedToken, setSelectedToken] = useState(null);
@@ -29,7 +31,7 @@ const DonationDetailsForm = () => {
   const [loadingRate, setLoadingRate] = useState(false);
   
   // Minimum donation amount in USD
-  const MINIMUM_DONATION_USD = 5;
+  const MINIMUM_DONATION_USD = 0.1;
   
   // Get tokens from user wallet
   const { walletTokens, isLoading: loadingWalletTokens } = useWalletTokens(chain?.id);
@@ -141,6 +143,7 @@ const DonationDetailsForm = () => {
   
   const handleDonate = () => {
     // Form validation
+    /* Commented out name and email validation
     if (!donorName) {
       setError('Please enter your name');
       return;
@@ -150,6 +153,7 @@ const DonationDetailsForm = () => {
       setError('Please enter a valid email address');
       return;
     }
+    */
     
     if (!donationAmount || isNaN(parseFloat(donationAmount)) || parseFloat(donationAmount) <= 0) {
       setError('Please enter a valid donation amount');
@@ -190,8 +194,10 @@ const DonationDetailsForm = () => {
     if (isSuccess && transactionHash) {
       // Save donor info
       localStorage.setItem('donorInfo', JSON.stringify({
+        /* Commented out name and email
         name: donorName,
         email: email,
+        */
         usdAmount: usdEquivalent,
         tokenAmount: donationAmount,
         tokenSymbol: selectedToken?.symbol,
@@ -229,6 +235,7 @@ const DonationDetailsForm = () => {
       <div className="mb-6">
         <h3 className="text-lg font-semibold mb-4">Enter customer details</h3>
         <div className="space-y-4">
+          {/* Commented out name field
           <div>
             <label className="block text-gray-700 mb-2">Customer name</label>
             <input 
@@ -240,7 +247,9 @@ const DonationDetailsForm = () => {
               required
             />
           </div>
+          */}
           
+          {/* Commented out email field
           <div>
             <label className="block text-gray-700 mb-2">Email address</label>
             <input 
@@ -252,6 +261,7 @@ const DonationDetailsForm = () => {
               required
             />
           </div>
+          */}
           
           <div>
             <label className="block text-gray-700 mb-2">Message (optional)</label>
@@ -354,7 +364,7 @@ const DonationDetailsForm = () => {
               <button 
                 onClick={handleDonate} 
                 disabled={isLoading || loadingRate || loadingWalletTokens || !donationAmount}
-                className={`w-full mt-6 ${isLoading || loadingRate || loadingWalletTokens || !donationAmount ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'} text-white py-3 px-4 rounded-lg transition-colors`}
+                className={`w-full mt-6 ${isLoading || loadingRate || loadingWalletTokens || !donationAmount ? 'bg-gray-400' : 'bg-yellow-500 hover:bg-yellow-600'} text-white py-3 px-4 rounded-lg transition-colors`}
               >
                 {isLoading ? 'Processing...' : 'Donate Now'}
               </button>

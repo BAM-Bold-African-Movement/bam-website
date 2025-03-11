@@ -41,7 +41,7 @@ export default function WalletWrapper({ className }) {
                   <button 
                     onClick={openConnectModal} 
                     type="button"
-                    className={className || "bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition-colors"}
+                    className={className || "bg-yellow-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition-colors"}
                   >
                     Connect Wallet
                   </button>
@@ -93,12 +93,12 @@ export default function WalletWrapper({ className }) {
                   <button
                     onClick={openAccountModal}
                     type="button"
-                    className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition-colors"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg transition-colors"
                   >
                     {account.displayName}
-                    {account.displayBalance
+                    {/*account.displayBalance
                       ? ` (${account.displayBalance})`
-                      : ''}
+                      : ''*/}
                   </button>
                 </div>
               );
