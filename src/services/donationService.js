@@ -65,10 +65,10 @@ const BAM_DONATION_ABI = abi.abi;
 export const useNativeDonation = (message = "") => {
   const { address } = useAccount();
   
-  const { data, writeContract , isPending, isError, error } = useWriteContract();
+  const { data: hash, writeContract , isPending, isError, error } = useWriteContract();
   
-  const { isLoading: isTransactionLoading, isSuccess } = useTransactionReceipt({
-    hash: data?.hash,
+  const { isLoading: isTransactionLoading, isSuccess: isConfirmed  } = useTransactionReceipt({
+    hash: hash,
   });
   
   const makeDonation = (amountInEth) => {
@@ -88,10 +88,10 @@ export const useNativeDonation = (message = "") => {
   return {
     makeDonation,
     isLoading: isPending || isTransactionLoading,
-    isSuccess,
+    isSuccess: isConfirmed,
     isError,
     error,
-    transactionHash: data?.hash
+    transactionHash: hash
   };
 };
 
@@ -99,10 +99,10 @@ export const useNativeDonation = (message = "") => {
 export const useTokenDonation = (tokenAddress, amount, message = "") => {
   const { address } = useAccount();
   
-  const { data, writeContract, isLoading, isError, error } = useWriteContract();
+  const { data: hash, writeContract, isLoading, isError, error } = useWriteContract();
   
-  const { isLoading: isTransactionLoading, isSuccess } = useTransactionReceipt({
-    hash: data?.hash,
+  const { isLoading: isTransactionLoading, isSuccess: isConfirmed } = useTransactionReceipt({
+    hash: hash,
   });
   
   const makeDonation = (amountInEth) => {
@@ -122,10 +122,10 @@ export const useTokenDonation = (tokenAddress, amount, message = "") => {
   return {
     makeDonation,
     isLoading: isLoading || isTransactionLoading,
-    isSuccess,
+    isSuccess: isConfirmed,
     isError,
     error,
-    transactionHash: data?.hash
+    transactionHash: hash
   };
 };
 

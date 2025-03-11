@@ -368,6 +368,10 @@ const DonationDetailsForm = () => {
               >
                 {isLoading ? 'Processing...' : 'Donate Now'}
               </button>
+              {transactionHash && <div>Transaction Hash: {transactionHash}</div>}
+              {isLoading && <div>Waiting for confirmation...</div>}
+              {isSuccess && <div>Transaction confirmed.</div>} 
+
             </>
           )}
         </div>
