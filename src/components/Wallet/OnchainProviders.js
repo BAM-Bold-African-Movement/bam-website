@@ -1,10 +1,9 @@
-import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { base, baseSepolia } from 'viem/chains';
 import { WagmiProvider, createConfig, http } from 'wagmi';
-import { CDP_API_KEY, WC_PROJECT_ID } from '../../utils/config';
+import { WC_PROJECT_ID } from '../../utils/config';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import {
   coinbaseWallet,
@@ -33,7 +32,7 @@ function createWagmiConfig() {
         },
         {
           groupName: 'Other Wallets',
-          wallets: [rainbowWallet, metaMaskWallet],
+          wallets: [rainbowWallet, metaMaskWallet, walletConnectWallet],
         },
       ],
       {
@@ -62,13 +61,9 @@ function OnchainProviders({ children }) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <OnchainKitProvider 
-            apiKey={CDP_API_KEY} 
-            chain={baseSepolia}>
-          <RainbowKitProvider modalSize="compact">
-            {children}
-          </RainbowKitProvider>
-        </OnchainKitProvider>
+        <RainbowKitProvider modalSize="compact">
+          {children}
+        </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
