@@ -1,3 +1,13 @@
+# [1.3.0](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.2.1...v1.3.0) (2025-03-12)
+
+
+### Features
+
+* added smart contract abi ([d035b0a](https://github.com/BAM-Bold-African-Movement/bam-website/commit/d035b0ab1fdb6ddff751128c5e2230f2220f4e17))
+* donation base on real time price and coin ([5388cf1](https://github.com/BAM-Bold-African-Movement/bam-website/commit/5388cf1da725a782b5881b39b843e899f66d0471))
+* now support native token ([0c6f9de](https://github.com/BAM-Bold-African-Movement/bam-website/commit/0c6f9decb4e2a7c2012ca4e4badae0424eb207a7))
+* redirect on succesful donation ([781826a](https://github.com/BAM-Bold-African-Movement/bam-website/commit/781826a65cdafee9dd289307e714f0463c9d60a1))
+
 ## [1.2.1](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.2.0...v1.2.1) (2025-03-05)
 
 
