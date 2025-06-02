@@ -301,6 +301,7 @@ const DonationDetailsForm = () => {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   value={selectedToken?.isNative ? "native" : selectedToken?.address}
                   onChange={handleTokenChange}
+                  disabled={isSuccess} // Disable after successful donation
                 >
                   {walletTokens.map(token => (
                     <option 
@@ -324,12 +325,14 @@ const DonationDetailsForm = () => {
                     onChange={handleAmountChange}
                     placeholder={`0.00 ${selectedToken?.symbol}`}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-24"
+                    disabled={isSuccess} // Disable after successful donation
                     required
                   />
                   <button
                     type="button"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-100 hover:bg-blue-200 text-blue-800 text-xs font-semibold py-1 px-2 rounded"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-100 hover:bg-blue-200 text-blue-800 text-xs font-semibold py-1 px-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={handleUseMaxBalance}
+                    disabled={isSuccess} // Disable after successful donation
                   >
                     MAX
                   </button>
@@ -355,6 +358,15 @@ const DonationDetailsForm = () => {
                 </div>
               )}
               
+              {/* Success message */}
+              {isSuccess && (
+                <div className="bg-green-50 border-l-4 border-green-500 p-4 my-4">
+                  <p className="text-green-700">
+                    ✅ Donation successful! Redirecting to confirmation page...
+                  </p>
+                </div>
+              )}
+              
               {error && (
                 <div className="bg-red-50 border-l-4 border-red-500 p-4 my-4">
                   <p className="text-red-700">{error}</p>
@@ -363,14 +375,29 @@ const DonationDetailsForm = () => {
               
               <button 
                 onClick={handleDonate} 
-                disabled={isLoading || loadingRate || loadingWalletTokens || !donationAmount}
-                className={`w-full mt-6 ${isLoading || loadingRate || loadingWalletTokens || !donationAmount ? 'bg-gray-400' : 'bg-yellow-500 hover:bg-yellow-600'} text-white py-3 px-4 rounded-lg transition-colors`}
+                disabled={isLoading || loadingRate || loadingWalletTokens || !donationAmount || isSuccess} // Added isSuccess to disable condition
+                className={`w-full mt-6 ${
+                  isLoading || loadingRate || loadingWalletTokens || !donationAmount || isSuccess 
+                    ? 'bg-gray-400 cursor-not-allowed' 
+                    : 'bg-yellow-500 hover:bg-yellow-600'
+                } text-white py-3 px-4 rounded-lg transition-colors`}
               >
-                {isLoading ? 'Processing...' : 'Donate Now'}
+                {isSuccess ? 'Donation Complete ✅' : isLoading ? 'Processing...' : 'Donate Now'}
               </button>
-              {transactionHash && <div>Transaction Hash: {transactionHash}</div>}
-              {isLoading && <div>Waiting for confirmation...</div>}
-              {isSuccess && <div>Transaction confirmed.</div>} 
+              
+              {transactionHash && (
+                <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                  <p className="text-sm text-gray-600">Transaction Hash:</p>
+                  <p className="text-xs font-mono break-all">{transactionHash}</p>
+                </div>
+              )}
+              
+              {isLoading && (
+                <div className="mt-4 text-center text-blue-600">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                  Waiting for confirmation...
+                </div>
+              )}
 
             </>
           )}
