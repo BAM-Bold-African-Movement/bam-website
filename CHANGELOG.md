@@ -1,3 +1,17 @@
+# [1.4.0](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.3.0...v1.4.0) (2025-06-02)
+
+
+### Bug Fixes
+
+* wagmi reading wrong data ([8253f85](https://github.com/BAM-Bold-African-Movement/bam-website/commit/8253f85d37b634d324586c2a6a2aa038ab9b0cb8))
+
+
+### Features
+
+* abi for new contract ([76d805b](https://github.com/BAM-Bold-African-Movement/bam-website/commit/76d805b9f0c1b30d64e7252433d4fb29e1e7005b))
+* mint page arranged well ([e8b9bd0](https://github.com/BAM-Bold-African-Movement/bam-website/commit/e8b9bd045fcf57b1fa24f33528dd537c95d7e12c))
+* support for nft ([e53c612](https://github.com/BAM-Bold-African-Movement/bam-website/commit/e53c612244108ad5620c1888ebdef91814d2472d))
+
 # [1.3.0](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.2.1...v1.3.0) (2025-03-12)
 
 
