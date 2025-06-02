@@ -511,6 +511,25 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_donor",
+          "type": "address"
+        }
+      ],
+      "name": "getDonationIndexByDonor",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "getNativeBalance",
       "outputs": [
@@ -869,5 +888,7 @@
       "stateMutability": "payable",
       "type": "receive"
     }
-  ]
+  ],
+  "linkReferences": {},
+  "deployedLinkReferences": {}
 }
