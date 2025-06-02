@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.4.1...v1.5.0) (2025-06-02)
+
+
+### Features
+
+* 404 page ([11794e1](https://github.com/BAM-Bold-African-Movement/bam-website/commit/11794e1ddc42071232afad9c3eb380007cbd6d67))
+
 ## [1.4.1](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.4.0...v1.4.1) (2025-06-02)
 
 
