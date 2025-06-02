@@ -10,6 +10,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import DonationPage from './page/donation/DonationPage';
 import NftMintPage from './page/donation/NftMintPage';
 import ConfirmationPage from './page/donation/ConfirmationPage';
+import NotFound from './components/NotFound'; 
 
 function App() {
   return (
@@ -17,19 +18,44 @@ function App() {
       <div className="min-h-screen bg-gray-900">
         <Routes>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="*" element={
+          <Route path="/" element={
             <>
               <Navbar />
-              <Routes>
-                <Route path="/" element={<MainContent />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/donations" element={<DonationPage />} />
-                <Route path="/mint-nft" element={<NftMintPage />} />
-                <Route path="/confirmation" element={<ConfirmationPage />} />
-              </Routes>
+              <MainContent />
             </>
           } />
+          <Route path="/blog" element={
+            <>
+              <Navbar />
+              <Blog />
+            </>
+          } />
+          <Route path="/login" element={
+            <>
+              <Navbar />
+              <Login />
+            </>
+          } />
+          <Route path="/donations" element={
+            <>
+              <Navbar />
+              <DonationPage />
+            </>
+          } />
+          <Route path="/mint-nft" element={
+            <>
+              <Navbar />
+              <NftMintPage />
+            </>
+          } />
+          <Route path="/confirmation" element={
+            <>
+              <Navbar />
+              <ConfirmationPage />
+            </>
+          } />
+          {/* 404 Not Found Route - should be last */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>
