@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.4.0...v1.4.1) (2025-06-02)
+
+
+### Bug Fixes
+
+* donation button still shows after success ([3f654c4](https://github.com/BAM-Bold-African-Movement/bam-website/commit/3f654c42276a0a23bb63a702e39f128a89ff1291))
+
 # [1.4.0](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.3.0...v1.4.0) (2025-06-02)
 
 
