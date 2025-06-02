@@ -215,7 +215,7 @@ export default function NftMintPage() {
                 You haven't made any donations yet. Make a donation to become eligible for an NFT!
               </p>
               <button 
-                onClick={() => navigate('/donate')} 
+                onClick={() => navigate('/donations')} 
                 className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition duration-200"
               >
                 Make a Donation

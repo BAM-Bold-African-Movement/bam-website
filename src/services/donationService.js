@@ -6,9 +6,9 @@ import bamNftAbi from '../abi/BAMDonationNFT.json';
 import erc20Abi from '../abi/IERC20.json';
 
 // Contract addresses - replace with your deployed addresses
-const BAM_DONATION_CONTRACT = '0x8A4143dfBeD35f34bbb9f3f95b8065932157a329';
-const BAM_NFT_TRACKER_CONTRACT = '0x...'; // Add your NFT tracker contract address
-const BAM_NFT_CONTRACT = '0x...'; // Add your NFT contract address
+const BAM_DONATION_CONTRACT = '0x48EAc2465b4BfA6DEE4009C3D043A5FcCbE26545';
+const BAM_NFT_TRACKER_CONTRACT = '0x24690A3f62633C45E4473120F5227741E8689f6c'; // Add your NFT tracker contract address
+const BAM_NFT_CONTRACT = '0xbBb74709629B14539f705Fe1673567FC56CFe6C5'; // Add your NFT contract address
 
 // Hook for native currency donation
 export const useNativeDonation = (message = "") => {
@@ -143,9 +143,11 @@ export const useAllDonations = () => {
     abi: bamDonationAbi.abi,
     functionName: 'getAllDonations',
   });
+
+  // console.log('Hook result:', { data, isLoading, isError, error });
   
   return {
-    donations: data || [],
+    donations: data,
     isLoading,
     isError,
     error,
@@ -156,19 +158,26 @@ export const useAllDonations = () => {
 // Hook to get donations by donor
 export const useDonationsByDonor = (donorAddress) => {
   const { data: donationIndices, isLoading: indicesLoading } = useReadContract({
-    address: BAM_DONATION_CONTRACT,
-    abi: bamDonationAbi.abi,
-    functionName: 'getDonationIndexByDonor',
+    address: BAM_NFT_TRACKER_CONTRACT,
+    abi: bamNftTrackerAbi.abi,
+    functionName: 'getDonationIndices',
     args: [donorAddress],
     enabled: !!donorAddress,
   });
-  
-  const { data: allDonations, isLoading: donationsLoading } = useAllDonations();
-  
+
+  // console.log('contractAddress:', BAM_NFT_TRACKER_CONTRACT);
+  // console.log('donorAddress:', donorAddress);
+  // console.log('donationIndices:', donationIndices);
+
+  const { donations: allDonations, isLoading: donationsLoading } = useAllDonations();
+
+
   const userDonations = donationIndices && allDonations 
     ? donationIndices.map(index => allDonations[Number(index)])
     : [];
-  
+
+  console.log('userDonations:', userDonations);
+
   return {
     donations: userDonations,
     donationIndices: donationIndices || [],

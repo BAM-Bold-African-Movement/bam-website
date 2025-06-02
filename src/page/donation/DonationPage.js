@@ -17,7 +17,7 @@ export default function DonationPage() {
       {/* Right Panel with Form - Added overflow-y-auto for scrolling */}
       <div className="w-full lg:w-1/2 p-8 overflow-y-auto max-h-screen">
         {step === 'details' ? (
-          <DonationDetailsForm 
+          <DonationDetailsForm
           />
         ) : (
           {
