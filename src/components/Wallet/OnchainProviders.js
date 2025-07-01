@@ -1,7 +1,7 @@
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode } from 'react';
-import { base, baseSepolia } from 'viem/chains';
+import { base, baseSepolia, sepolia } from 'viem/chains';
 import { WagmiProvider, createConfig, http } from 'wagmi';
 import { WC_PROJECT_ID } from '../../utils/config';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
@@ -42,7 +42,7 @@ function createWagmiConfig() {
     );
 
   return createConfig({
-    chains: [/*base,*/ baseSepolia],
+    chains: [/*base,*/ baseSepolia, sepolia],
     // turn off injected provider discovery
     multiInjectedProviderDiscovery: false,
     connectors,
@@ -50,6 +50,7 @@ function createWagmiConfig() {
     transports: {
       /*[base.id]: http(),*/
       [baseSepolia.id]: http(),
+      [sepolia.id]: http(),
     },
   });
 }
