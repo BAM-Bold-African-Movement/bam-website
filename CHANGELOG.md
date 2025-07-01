@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.5.0...v1.6.0) (2025-07-01)
+
+
+### Features
+
+* add multi-network support for contract interactions ([0d4d322](https://github.com/BAM-Bold-African-Movement/bam-website/commit/0d4d3228dfeecd031e867ba211c6fd63aecbb5e9))
+
 # [1.5.0](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.4.1...v1.5.0) (2025-06-02)
 
 
