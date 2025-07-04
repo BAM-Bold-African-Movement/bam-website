@@ -209,14 +209,7 @@ const BlogPostForm = ({ onPostCreated, editingPost, onCancel }) => {
         <div className="flex justify-end space-x-4">
           <button
             type="button"
-            onClick={() => setNewPost({
-              title: '',
-              content: '',
-              readMoreLink: '',
-              image: null,
-              imagePreview: null,
-              date: new Date().toLocaleDateString()
-            })}
+            onClick={() => handleCancel()}
             className="px-4 py-2 text-gray-400 hover:text-gray-300"
           >
             Cancel
