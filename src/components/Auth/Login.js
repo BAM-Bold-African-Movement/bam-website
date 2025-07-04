@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Login = () => {
@@ -8,8 +8,22 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
-  const { signin } = useAuth();
+  const { signin, user, userRole, isAdmin } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the page user was trying to access before login
+  const from = location.state?.from?.pathname || '/dashboard';
+
+  useEffect(() => {
+    console.log('Login component - user:', user, 'userRole:', userRole);
+    
+    // Only redirect if we have both user and role data
+    if (user && userRole && isAdmin()) {
+      console.log('Redirecting to:', from);
+      navigate(from, { replace: true });
+    }
+  }, [user, userRole, navigate, from, isAdmin]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,8 +37,13 @@ const Login = () => {
     setError('');
 
     try {
+      console.log('Attempting login...');
       await signin(email, password);
-      navigate('/dashboard');
+      console.log('Login successful');
+      
+      // Don't navigate here - let the useEffect handle it
+      // after the user data is loaded
+      
     } catch (error) {
       console.error('Login error:', error);
       
@@ -41,6 +60,9 @@ const Login = () => {
           break;
         case 'auth/too-many-requests':
           setError('Too many failed attempts. Please try again later');
+          break;
+        case 'auth/invalid-credential':
+          setError('Invalid email or password');
           break;
         default:
           setError('Login failed. Please try again');
@@ -84,6 +106,7 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500"
                 placeholder="Enter your email"
+                disabled={loading}
               />
             </div>
             
@@ -101,6 +124,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500"
                 placeholder="Enter your password"
+                disabled={loading}
               />
             </div>
           </div>
@@ -129,6 +153,15 @@ const Login = () => {
             </button>
           </div>
         </form>
+
+        {/* Debug info - remove in production */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="text-xs text-gray-500 mt-4">
+            <p>Debug: User: {user ? 'Yes' : 'No'}</p>
+            <p>Debug: Role: {userRole || 'None'}</p>
+            <p>Debug: IsAdmin: {isAdmin() ? 'Yes' : 'No'}</p>
+          </div>
+        )}
       </div>
     </div>
   );

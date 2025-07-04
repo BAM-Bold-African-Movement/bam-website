@@ -226,7 +226,7 @@ class BlogService {
   // Get author information for posts
   async getAuthorInfo(authorId) {
     try {
-      const docRef = doc(db, 'users', authorId);
+      const docRef = doc(db, 'user', authorId);
       const docSnap = await getDoc(docRef);
       
       if (docSnap.exists()) {
@@ -260,18 +260,18 @@ class BlogService {
     async getUsersList() {
         try {
             const q = query(
-                collection(db, 'users'),
+                collection(db, 'user'),
                 orderBy('createdAt', 'desc')
             );
             
             const querySnapshot = await getDocs(q);
-            const users = [];
+            const user = [];
             
             querySnapshot.forEach((doc) => {
-                users.push({ id: doc.id, ...doc.data() });
+                user.push({ id: doc.id, ...doc.data() });
             });
 
-            return users;
+            return user;
         } catch (error) {
             console.error('Error getting users:', error);
             throw error;
@@ -281,7 +281,7 @@ class BlogService {
     // Update user (for super admin)
     async updateUser(userId, userData) {
         try {
-            const docRef = doc(db, 'users', userId);
+            const docRef = doc(db, 'user', userId);
             const updateData = {
                 ...userData,
                 updatedAt: new Date().toISOString()
@@ -299,7 +299,7 @@ class BlogService {
     async deleteUser(userId) {
     try {
         // Delete user document from Firestore
-        await deleteDoc(doc(db, 'users', userId));
+        await deleteDoc(doc(db, 'user', userId));
         
         // Note: We cannot delete users from Firebase Auth client-side
         // This would need to be done server-side using Firebase Admin SDK

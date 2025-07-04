@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { 
-  signInWithEmailAndPassword, 
+  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signOut, 
+  signOut,
   onAuthStateChanged,
-  updateProfile
+  updateProfile 
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase';
@@ -26,39 +26,55 @@ export const AuthProvider = ({ children }) => {
 
   // Sign up function (for super admin to create admins)
   const signup = async (email, password, name, role = 'admin') => {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    
-    // Update profile with name
-    await updateProfile(user, { displayName: name });
-    
-    // Save additional user data to Firestore
-    await setDoc(doc(db, 'users', user.uid), {
-      uid: user.uid,
-      email: user.email,
-      name: name,
-      role: role,
-      createdAt: new Date().toISOString()
-    });
-    
-    return user;
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      // Update profile with name
+      await updateProfile(user, { displayName: name });
+      
+      // Save additional user data to Firestore
+      await setDoc(doc(db, 'user', user.uid), { // Changed from 'users' to 'user'
+        uid: user.uid,
+        email: user.email,
+        name: name,
+        role: role,
+        status: 'Active',
+        createdAt: new Date().toISOString()
+      });
+      
+      return user;
+    } catch (error) {
+      console.error('Error in signup:', error);
+      throw error;
+    }
   };
 
   // Sign in function
   const signin = async (email, password) => {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      return userCredential.user;
+    } catch (error) {
+      console.error('Error in signin:', error);
+      throw error;
+    }
   };
 
   // Sign out function
   const logout = async () => {
-    await signOut(auth);
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Error in logout:', error);
+      throw error;
+    }
   };
 
   // Get user role and data
   const getUserData = async (uid) => {
     try {
-      const userDoc = await getDoc(doc(db, 'users', uid));
+      const userDoc = await getDoc(doc(db, 'user', uid)); // Changed from 'users' to 'user'
       if (userDoc.exists()) {
         return userDoc.data();
       }
@@ -86,20 +102,41 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log('Auth state changed:', user ? 'User found' : 'No user');
+      
       if (user) {
-        // Get user data and role
-        const userData = await getUserData(user.uid);
-        
-        if (userData && isAdmin(userData.role)) {
+        try {
+          // Get user data and role
+          const userData = await getUserData(user.uid);
+         // console.log('User data:', userData);
+          
+          if (userData) {
+            // Check if user has admin role
+            if (isAdmin(userData.role)) {
+              console.log('User is admin, setting user state');
+              setUser(user);
+              setUserRole(userData.role);
+            } else {
+              console.log('User is not admin, signing out');
+              await signOut(auth);
+              setUser(null);
+              setUserRole(null);
+            }
+          } else {
+            console.log('No user data found in Firestore');
+            // Don't immediately sign out - could be a new user or network issue
+            // Instead, set user but with null role, let the app handle it
+            setUser(user);
+            setUserRole(null);
+          }
+        } catch (error) {
+          console.error('Error in auth state change:', error);
+          // On error, don't sign out immediately, let the app handle it
           setUser(user);
-          setUserRole(userData.role);
-        } else {
-          // If not admin, sign them out
-          await signOut(auth);
-          setUser(null);
           setUserRole(null);
         }
       } else {
+        console.log('No user, clearing state');
         setUser(null);
         setUserRole(null);
       }
