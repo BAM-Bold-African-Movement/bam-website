@@ -255,6 +255,62 @@ class BlogService {
       };
     }
   }
+
+    // Get all users (for super admin)
+    async getUsersList() {
+        try {
+            const q = query(
+                collection(db, 'users'),
+                orderBy('createdAt', 'desc')
+            );
+            
+            const querySnapshot = await getDocs(q);
+            const users = [];
+            
+            querySnapshot.forEach((doc) => {
+                users.push({ id: doc.id, ...doc.data() });
+            });
+
+            return users;
+        } catch (error) {
+            console.error('Error getting users:', error);
+            throw error;
+        }
+    }
+
+    // Update user (for super admin)
+    async updateUser(userId, userData) {
+        try {
+            const docRef = doc(db, 'users', userId);
+            const updateData = {
+                ...userData,
+                updatedAt: new Date().toISOString()
+            };
+
+            await updateDoc(docRef, updateData);
+            return { id: userId, ...updateData };
+        } catch (error) {
+            console.error('Error updating user:', error);
+            throw error;
+        }
+    }
+
+    // Delete user (for super admin)
+    async deleteUser(userId) {
+    try {
+        // Delete user document from Firestore
+        await deleteDoc(doc(db, 'users', userId));
+        
+        // Note: We cannot delete users from Firebase Auth client-side
+        // This would need to be done server-side using Firebase Admin SDK
+        // For now, we'll just remove from Firestore
+        
+        return true;
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        throw error;
+    }
+    }
 }
 
 export default new BlogService();
