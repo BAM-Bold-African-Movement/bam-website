@@ -64,7 +64,7 @@ const Blog = () => {
 
   const handleSortChange = (newSort) => {
     setSortBy(newSort);
-    // Note: You'd need to modify the blogService to handle different sorting
+    // TODO: need to modify the blogService to handle different sorting
     // For now, we'll just reload the posts
     loadPosts(true);
   };
