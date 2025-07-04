@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BlogPostForm from './BlogPostForm';
 import { useAuth } from '../../contexts/AuthContext';
-import BlogService from '../services/BlogService';
+import BlogService from '../../services/blogService';
 
 const Dashboard = () => {
   const { user, userRole, isSuperAdmin, isRegularAdmin, signup, getUserData } = useAuth();

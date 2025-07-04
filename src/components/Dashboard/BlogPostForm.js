@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import BlogService from '../services/BlogService';
+import BlogService from '../../services/blogService';
 
 const BlogPostForm = ({ onPostCreated, editingPost, onCancel }) => {
   const { user } = useAuth();
