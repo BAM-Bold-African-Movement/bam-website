@@ -2,6 +2,7 @@ import React from 'react';
 import '@coinbase/onchainkit/styles.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Layout/Navbar';
 import MainContent from './components/MainContent';
 import Blog from './components/Blog';
@@ -16,6 +17,7 @@ import {Editor} from './components/Editor/Editor';
 
 function App() {
   return (
+    <HelmetProvider>
     <Router>
       <div className="min-h-screen bg-gray-900">
         <Routes>
@@ -86,6 +88,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </HelmetProvider>
   );
 }
 
