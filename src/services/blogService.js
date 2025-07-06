@@ -28,31 +28,44 @@ class BlogService {
   // Create a new blog post
   async createPost(postData, imageFile, authorId) {
     try {
-      let imageUrl = '';
-      
-      // Upload image if provided
-      if (imageFile) {
-        const imageRef = ref(storage, `blog-images/${Date.now()}_${imageFile.name}`);
-        const snapshot = await uploadBytes(imageRef, imageFile);
-        imageUrl = await getDownloadURL(snapshot.ref);
-      }
+        let imageUrl = '';
+        
+        // Upload image if provided (for backward compatibility)
+        if (imageFile) {
+            const imageRef = ref(storage, `blog-images/${Date.now()}_${imageFile.name}`);
+            const snapshot = await uploadBytes(imageRef, imageFile);
+            imageUrl = await getDownloadURL(snapshot.ref);
+        }
 
-      // Create post document with author ID
-      const docData = {
-        ...postData,
-        authorId: authorId, // Track who created the post
-        image: imageUrl,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        views: 0,
-        status: 'published'
-      };
+        // Create post document with author ID - FIXED to match Firestore rules
+        const docData = {
+            title: postData.title,
+            subtitle: postData.subtitle || '',
+            content: postData.body, // Changed from 'body' to 'content' to match rules
+            tags: postData.tags || [],
+            wordCount: postData.wordCount || 0,
+            paragraphCount: postData.paragraphCount || 0,
+            readTime: postData.readTime || 1,
+            authorId: authorId, // Track who created the post
+            image: imageUrl || postData.coverImageUrl || '', // Use uploaded image or coverImageUrl from editor
+            createdAt: new Date(), // Use Date object, not ISO string
+            updatedAt: new Date(), // Use Date object, not ISO string
+            views: 0, // Initialize views to 0
+            status: postData.status || 'published' // Default to published
+        };
 
-      const docRef = await addDoc(collection(db, this.collectionName), docData);
-      return { id: docRef.id, ...docData };
+        const docRef = await addDoc(collection(db, this.collectionName), docData);
+        
+        // Return with ISO strings for frontend use
+        return { 
+            id: docRef.id, 
+            ...docData,
+            createdAt: docData.createdAt.toISOString(),
+            updatedAt: docData.updatedAt.toISOString()
+        };
     } catch (error) {
-      console.error('Error creating post:', error);
-      throw error;
+        console.error('Error creating post:', error);
+        throw error;
     }
   }
 
@@ -159,25 +172,48 @@ class BlogService {
   // Update post (with author check handled by security rules)
   async updatePost(id, postData, imageFile = null) {
     try {
-      const docRef = doc(db, this.collectionName, id);
-      let updateData = {
-        ...postData,
-        updatedAt: new Date().toISOString()
-      };
+        const docRef = doc(db, this.collectionName, id);
+        let updateData = {
+            title: postData.title,
+            subtitle: postData.subtitle || '',
+            content: postData.body || postData.content, // Support both field names
+            tags: postData.tags || [],
+            wordCount: postData.wordCount || 0,
+            paragraphCount: postData.paragraphCount || 0,
+            readTime: postData.readTime || 1,
+            status: postData.status || 'published',
+            updatedAt: new Date() // Use Date object, not ISO string
+        };
 
-      // Upload new image if provided
-      if (imageFile) {
-        const imageRef = ref(storage, `blog-images/${Date.now()}_${imageFile.name}`);
-        const snapshot = await uploadBytes(imageRef, imageFile);
-        const imageUrl = await getDownloadURL(snapshot.ref);
-        updateData.image = imageUrl;
-      }
+        // Upload new image if provided
+        if (imageFile) {
+            const imageRef = ref(storage, `blog-images/${Date.now()}_${imageFile.name}`);
+            const snapshot = await uploadBytes(imageRef, imageFile);
+            const imageUrl = await getDownloadURL(snapshot.ref);
+            updateData.image = imageUrl;
+        } else if (postData.coverImageUrl) {
+            updateData.image = postData.coverImageUrl;
+        }
 
-      await updateDoc(docRef, updateData);
-      return { id, ...updateData };
+        // Get current document to preserve authorId and views
+        const currentDoc = await getDoc(docRef);
+        if (currentDoc.exists()) {
+            const currentData = currentDoc.data();
+            updateData.authorId = currentData.authorId; // Preserve authorId
+            updateData.views = currentData.views || 0; // Preserve views
+        }
+
+        await updateDoc(docRef, updateData);
+        
+        // Return with ISO string for frontend use
+        return { 
+            id, 
+            ...updateData,
+            updatedAt: updateData.updatedAt.toISOString()
+        };
     } catch (error) {
-      console.error('Error updating post:', error);
-      throw error;
+        console.error('Error updating post:', error);
+        throw error;
     }
   }
 

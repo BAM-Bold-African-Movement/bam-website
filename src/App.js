@@ -12,6 +12,7 @@ import NftMintPage from './page/donation/NftMintPage';
 import ConfirmationPage from './page/donation/ConfirmationPage';
 import NotFound from './components/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
+import {Editor} from './components/Editor/Editor';
 
 function App() {
   return (
@@ -24,6 +25,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+                <Editor />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dashboard/editor" 
+            element={
+              <ProtectedRoute>
+                <Editor />
               </ProtectedRoute>
             } 
           />
