@@ -3,7 +3,7 @@ import styled from "styled-components";
 import publishIcon from "../../images/publishIcon.svg";
 import roundLoading1 from "../../images/roundLoading1.gif";
 import { AiOutlineSetting, AiOutlineCloud, AiOutlineMenu } from "react-icons/ai";
-import { NewLogo } from "../../images/NewLogo";
+// import { NewLogo } from "../../images/NewLogo";
 import { SettingDiv } from "./SettingDiv";
 import { Link } from "react-router-dom";
 
@@ -24,11 +24,11 @@ export const EditorNavbar = ({
         <>
             <HeaderDiv>
                 <LeftSection>
-                    <Link to="/">
+                    {/* <Link to="/">
                         <LogoWrapper>
                             <NewLogo width="128px" height="21.95px" />
                         </LogoWrapper>
-                    </Link>
+                    </Link> */}
                     <MobileSaveStatus>
                         {!liveSaving ? (
                             <SaveIndicator>
