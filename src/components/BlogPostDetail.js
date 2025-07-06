@@ -207,7 +207,7 @@ const BlogPostDetail = () => {
                     </div>
                     <div className="ml-3">
                       <p className="text-white font-medium">{author.name}</p>
-                      <p className="text-gray-400 text-sm">{author.role}</p>
+                      {/* <p className="text-gray-400 text-sm">{author.role}</p> */}
                     </div>
                   </div>
                 )}
