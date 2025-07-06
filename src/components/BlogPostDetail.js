@@ -66,6 +66,15 @@ const BlogPostDetail = () => {
     }
   };
 
+  const handleGoBack = () => {
+    // Try to go back in history, fallback to blog page
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/blog');
+    }
+  };
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -118,33 +127,33 @@ const BlogPostDetail = () => {
       <div className="min-h-screen bg-gray-900">
         {/* Header Navigation */}
         <div className="bg-gray-800 sticky top-0 z-50 border-b border-gray-700">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
-              <button
-                onClick={() => navigate(-1)}
+                <button
+                onClick={handleGoBack}
                 className="flex items-center text-gray-300 hover:text-white transition-colors"
-              >
+                >
                 <ArrowLeft className="w-5 h-5 mr-2" />
                 Back
-              </button>
-              
-              <div className="flex items-center space-x-4">
+                </button>
+                
+                <div className="flex items-center space-x-4">
                 <button
-                  onClick={handleShare}
-                  className="flex items-center text-gray-300 hover:text-white transition-colors"
+                    onClick={handleShare}
+                    className="flex items-center text-gray-300 hover:text-white transition-colors"
                 >
-                  <Share2 className="w-5 h-5 mr-2" />
-                  Share
+                    <Share2 className="w-5 h-5 mr-2" />
+                    Share
                 </button>
                 <Link
-                  to="/blog"
-                  className="text-yellow-400 hover:text-yellow-300 transition-colors"
+                    to="/blog"
+                    className="text-yellow-400 hover:text-yellow-300 transition-colors"
                 >
-                  All Posts
+                    All Posts
                 </Link>
-              </div>
+                </div>
             </div>
-          </div>
+            </div>
         </div>
 
         {/* Main Content */}
