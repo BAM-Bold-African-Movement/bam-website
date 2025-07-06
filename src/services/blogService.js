@@ -93,7 +93,13 @@ class BlogService {
       const posts = [];
       
       querySnapshot.forEach((doc) => {
-        posts.push({ id: doc.id, ...doc.data() });
+        const data = doc.data();
+        posts.push({ 
+          id: doc.id, 
+          ...data,
+          createdAt: data.createdAt?.toDate?.() || data.createdAt,
+          updatedAt: data.updatedAt?.toDate?.() || data.updatedAt
+        });
       });
 
       return {
@@ -159,7 +165,13 @@ class BlogService {
       const docSnap = await getDoc(docRef);
       
       if (docSnap.exists()) {
-        return { id: docSnap.id, ...docSnap.data() };
+        const data = docSnap.data();
+        return { 
+            id: docSnap.id, 
+            ...data,
+            createdAt: data.createdAt?.toDate?.() || data.createdAt,
+            updatedAt: data.updatedAt?.toDate?.() || data.updatedAt
+        };
       } else {
         throw new Error('Post not found');
       }
