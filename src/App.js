@@ -22,16 +22,17 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-900">
         <Routes>
-          {/* Protected Dashboard Route */}
+          {/* Protected Dashboard Route - Only Dashboard */}
           <Route 
             path="/dashboard" 
             element={
               <ProtectedRoute>
                 <Dashboard />
-                <Editor />
               </ProtectedRoute>
             } 
           />
+          
+          {/* Separate Editor Route */}
           <Route 
             path="/dashboard/editor" 
             element={
