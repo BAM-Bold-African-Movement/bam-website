@@ -161,48 +161,58 @@ const Blog = () => {
                         key={post.id} 
                         className="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300 shadow-lg"
                       >
-                        {/* Image */}
-                        <div className="h-48 overflow-hidden">
-                          <img
-                            src={post.image || "/static/img/fallback-blog.jpg"}
-                            alt={post.title}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.target.src = "/static/img/fallback-blog.jpg";
-                            }}
-                          />
-                        </div>
+                        {/* Image - Make it clickable */}
+                        <Link to={`/blog/${post.id}`} className="block">
+                          <div className="h-48 overflow-hidden">
+                            <img
+                              src={post.image || "/static/img/fallback-blog.jpg"}
+                              alt={post.title}
+                              className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                              onError={(e) => {
+                                e.target.src = "/static/img/fallback-blog.jpg";
+                              }}
+                            />
+                          </div>
+                        </Link>
                         
                         {/* Content */}
                         <div className="p-6">
-                          {/* Date */}
-                          <div className="text-sm text-gray-400 mb-3">
-                            {new Date(post.createdAt).toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric'
-                            })}
+                          {/* Date and Tags */}
+                          <div className="flex justify-between items-center mb-3">
+                            <div className="text-sm text-gray-400">
+                              {new Date(post.createdAt).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              })}
+                            </div>
+                            {post.tags && post.tags.length > 0 && (
+                              <span className="px-2 py-1 bg-yellow-500 text-black rounded-full text-xs">
+                                #{post.tags[0]}
+                              </span>
+                            )}
                           </div>
                           
-                          {/* Title */}
-                          <h3 className="text-xl font-bold text-white mb-3 line-clamp-2">
-                            {post.title}
-                          </h3>
+                          {/* Title - Make it clickable */}
+                          <Link to={`/blog/${post.id}`}>
+                            <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 hover:text-yellow-400 transition-colors">
+                              {post.title}
+                            </h3>
+                          </Link>
                           
                           {/* Description */}
                           <p className="text-gray-300 mb-4 line-clamp-3">
-                            {post.content.substring(0, 150)}...
+                            {post.subtitle || post.content?.substring(0, 150)}...
                           </p>
                           
                           {/* Views and Read More */}
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-gray-500">
-                              {post.views || 0} views
+                              {post.views || 0} views • {post.readTime || 5} min read
                             </span>
                             <Link 
                               to={`/blog/${post.id}`}
                               className="inline-block text-yellow-400 hover:text-yellow-300 font-medium transition-colors"
-                              onClick={() => blogService.incrementViews(post.id)}
                             >
                               Read More →
                             </Link>
