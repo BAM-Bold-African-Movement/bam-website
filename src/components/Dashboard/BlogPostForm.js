@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { blog } from '../../services/api';
+import { useAuth } from '../../contexts/AuthContext';
+import BlogService from '../../services/blogService';
 
-const BlogPostForm = ({ onPostCreated }) => {
+const BlogPostForm = ({ onPostCreated, editingPost, onCancel }) => {
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [newPost, setNewPost] = useState({
-    title: '',
-    content: '',
-    readMoreLink: '',
+    title: editingPost?.title || '',
+    content: editingPost?.content || '',
+    readMoreLink: editingPost?.readMoreLink || '',
     image: null,
-    imagePreview: null,
-    date: new Date().toLocaleDateString() // Automatically capture current date
+    imagePreview: editingPost?.image || null,
+    date: editingPost ? new Date(editingPost.createdAt).toLocaleDateString() : new Date().toLocaleDateString()
   });
 
   const handleImageChange = (e) => {
@@ -26,26 +29,39 @@ const BlogPostForm = ({ onPostCreated }) => {
     }
   };
 
-  const handleSubmit = async (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add validation
-    if (!newPost.image) {
-      alert('Please select an image');
-      return;
-    }
+    
+    // Validation
     if (!newPost.title.trim() || !newPost.content.trim()) {
       alert('Please fill in all required fields');
       return;
     }
     
+    if (!editingPost && !newPost.image) {
+      alert('Please select an image');
+      return;
+    }
+    
+    setLoading(true);
+    
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('title', newPost.title.trim());
-      formDataToSend.append('content', newPost.content.trim());
-      formDataToSend.append('readMoreLink', newPost.readMoreLink.trim());
-      formDataToSend.append('image', newPost.image);
+      const postData = {
+        title: newPost.title.trim(),
+        content: newPost.content.trim(),
+        readMoreLink: newPost.readMoreLink.trim(),
+        excerpt: newPost.content.trim().substring(0, 150) + '...' // Generate excerpt
+      };
 
-      const response = await blog.createPost(formDataToSend);
+      if (editingPost) {
+        // Update existing post
+        await BlogService.updatePost(editingPost.id, postData, newPost.image);
+        alert('Post updated successfully!');
+      } else {
+        // Create new post
+        await BlogService.createPost(postData, newPost.image, user.uid);
+        alert('Post created successfully!');
+      }
       
       // Reset form
       setNewPost({
@@ -59,16 +75,28 @@ const BlogPostForm = ({ onPostCreated }) => {
       
       // Notify parent component
       if (onPostCreated) {
-        onPostCreated(response.data);
+        onPostCreated();
       }
-
-      // Show success message
-      alert('Post created successfully!');
       
-    } catch (err) {
-      console.error('Error creating post:', err);
-      const message = err.response?.data?.message || 'Error creating post. Please try again.';
-      alert(message);
+    } catch (error) {
+      console.error('Error saving post:', error);
+      alert(`Error ${editingPost ? 'updating' : 'creating'} post. Please try again.`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setNewPost({
+      title: '',
+      content: '',
+      readMoreLink: '',
+      image: null,
+      imagePreview: null,
+      date: new Date().toLocaleDateString()
+    });
+    if (onCancel) {
+      onCancel();
     }
   };
 
@@ -181,23 +209,17 @@ const BlogPostForm = ({ onPostCreated }) => {
         <div className="flex justify-end space-x-4">
           <button
             type="button"
-            onClick={() => setNewPost({
-              title: '',
-              content: '',
-              readMoreLink: '',
-              image: null,
-              imagePreview: null,
-              date: new Date().toLocaleDateString()
-            })}
+            onClick={() => handleCancel()}
             className="px-4 py-2 text-gray-400 hover:text-gray-300"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-colors duration-300"
+            disabled={loading}
+            className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-colors duration-300 disabled:bg-gray-500"
           >
-            Create Post
+            {loading ? 'Saving...' : (editingPost ? 'Update Post' : 'Create Post')}
           </button>
         </div>
       </form>

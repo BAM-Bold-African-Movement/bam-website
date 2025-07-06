@@ -1,70 +1,41 @@
-# Getting Started with Create React App
+# BAM Website Documentation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## What is BAM?
+BAM is a donation website where people can contribute cryptocurrency to support our cause. Donors receive special NFT rewards as a thank you for their contributions.
 
-## Available Scripts
+## Main Features
 
-In the project directory, you can run:
+### 💰 Donations
+- Accept cryptocurrency donations (ETH and tokens)
+- Donors can leave messages with their contributions
+- All donations are tracked and displayed publicly
 
-### `npm start`
+### 🏆 NFT Rewards
+- Donors receive commemorative NFTs
+- One NFT per donor (limited edition)
+- Claim your NFT after making a donation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 📝 Blog
+- Share updates about our work
+- Post impact stories and news
+- Keep the community informed
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## How to Donate
+1. Connect your crypto wallet
+2. Choose your donation amount
+3. Add a message (optional)
+4. Confirm the transaction
+5. Claim your NFT reward
 
-### `npm test`
+## Supported Networks
+- Base Sepolia (testnet)
+- Ethereum Sepolia (testnet)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Requirements
+- Crypto wallet (MetaMask recommended)
+- Some cryptocurrency for donations
+- Small amount for transaction fees
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+*A simple platform to make crypto donations and earn NFT rewards while supporting our mission.*
