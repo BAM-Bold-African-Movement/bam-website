@@ -14,6 +14,7 @@ import ConfirmationPage from './page/donation/ConfirmationPage';
 import NotFound from './components/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 import {Editor} from './components/Editor/Editor';
+import BlogPostDetail from './components/BlogPostDetail';
 
 function App() {
   return (
@@ -54,6 +55,8 @@ function App() {
               <Blog />
             </>
           } />
+
+          <Route path="/blog/:id" element={<BlogPostDetail />} />
           
           <Route path="/login" element={
             <>
