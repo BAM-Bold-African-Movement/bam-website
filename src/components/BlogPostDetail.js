@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import ReactMarkdown from 'react-markdown';
-import { ArrowLeft, Clock, Eye, Calendar, Share2, BookOpen } from 'lucide-react';
+import { Clock, Eye, Calendar, Share2, BookOpen, ArrowLeft } from 'lucide-react';
 import Footer from './Footer';
 import blogService from '../services/blogService';
 
@@ -23,20 +23,16 @@ const BlogPostDetail = () => {
     try {
       setLoading(true);
       
-      // Get the post
       const postData = await blogService.getPost(id);
       setPost(postData);
       
-      // Increment view count
       await blogService.incrementViews(id);
       
-      // Get author information
       if (postData.authorId) {
         const authorData = await blogService.getAuthorInfo(postData.authorId);
         setAuthor(authorData);
       }
       
-      // Get related posts (for now, just get recent posts)
       const relatedData = await blogService.getPosts(4);
       setRelatedPosts(relatedData.posts.filter(p => p.id !== id));
       
@@ -60,14 +56,12 @@ const BlogPostDetail = () => {
         console.log('Error sharing:', error);
       }
     } else {
-      // Fallback: copy to clipboard
       navigator.clipboard.writeText(window.location.href);
       alert('Link copied to clipboard!');
     }
   };
 
   const handleGoBack = () => {
-    // Try to go back in history, fallback to blog page
     if (window.history.length > 1) {
       navigate(-1);
     } else {
@@ -137,41 +131,44 @@ const BlogPostDetail = () => {
       </Helmet>
 
       <div className="min-h-screen bg-gray-900">
-        {/* Header Navigation */}
-        <div className="bg-gray-800 sticky top-0 z-50 border-b border-gray-700">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-                <button
-                onClick={handleGoBack}
-                className="flex items-center text-gray-300 hover:text-white transition-colors"
-                >
-                <ArrowLeft className="w-5 h-5 mr-2" />
-                Back
-                </button>
-                
-                <div className="flex items-center space-x-4">
-                <button
-                    onClick={handleShare}
-                    className="flex items-center text-gray-300 hover:text-white transition-colors"
-                >
-                    <Share2 className="w-5 h-5 mr-2" />
-                    Share
-                </button>
-                <Link
-                    to="/blog"
-                    className="text-yellow-400 hover:text-yellow-300 transition-colors"
-                >
-                    All Posts
-                </Link>
-                </div>
+        {/* Main Content - Added top padding for navbar */}
+        <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+          {/* Breadcrumb Navigation */}
+          <nav className="mb-8">
+            <div className="flex items-center space-x-2 text-sm">
+              <Link to="/" className="text-yellow-400 hover:text-yellow-300">
+                Home
+              </Link>
+              <span className="text-gray-500">/</span>
+              <Link to="/blog" className="text-yellow-400 hover:text-yellow-300">
+                Blog
+              </Link>
+              <span className="text-gray-500">/</span>
+              <span className="text-gray-400 truncate">{post.title}</span>
             </div>
-            </div>
-        </div>
+          </nav>
 
-        {/* Main Content */}
-        <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Article Header */}
           <header className="mb-8">
+            {/* Action Buttons */}
+            <div className="flex justify-between items-center mb-6">
+              <button
+                onClick={handleGoBack}
+                className="flex items-center text-gray-300 hover:text-white transition-colors group"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+                Back to Blog
+              </button>
+              
+              <button
+                onClick={handleShare}
+                className="flex items-center bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                Share
+              </button>
+            </div>
+
             {/* Featured Image */}
             {post.image && (
               <div className="mb-8 rounded-lg overflow-hidden">
@@ -207,7 +204,6 @@ const BlogPostDetail = () => {
                     </div>
                     <div className="ml-3">
                       <p className="text-white font-medium">{author.name}</p>
-                      {/* <p className="text-gray-400 text-sm">{author.role}</p> */}
                     </div>
                   </div>
                 )}
@@ -251,7 +247,6 @@ const BlogPostDetail = () => {
             <div className="blog-content">
               <ReactMarkdown
                 components={{
-                  // Custom components for better styling
                   h1: ({children}) => <h1 className="text-3xl font-bold text-white mb-6 mt-8">{children}</h1>,
                   h2: ({children}) => <h2 className="text-2xl font-bold text-white mb-4 mt-6">{children}</h2>,
                   h3: ({children}) => <h3 className="text-xl font-bold text-white mb-3 mt-5">{children}</h3>,
@@ -296,6 +291,35 @@ const BlogPostDetail = () => {
               </ReactMarkdown>
             </div>
           </article>
+
+          {/* Bottom Action Bar */}
+          <div className="mt-12 pt-8 border-t border-gray-700">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={handleGoBack}
+                  className="flex items-center text-gray-300 hover:text-white transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back to Blog
+                </button>
+                <Link
+                  to="/blog"
+                  className="text-yellow-400 hover:text-yellow-300 transition-colors"
+                >
+                  View All Posts
+                </Link>
+              </div>
+              
+              <button
+                onClick={handleShare}
+                className="flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg transition-colors"
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                Share Post
+              </button>
+            </div>
+          </div>
 
           {/* Related Posts */}
           {relatedPosts.length > 0 && (
