@@ -33,14 +33,14 @@ function App() {
           />
           
           {/* Separate Editor Route */}
-          <Route 
+          {/* <Route 
             path="/dashboard/editor" 
             element={
               <ProtectedRoute>
                 <Editor />
               </ProtectedRoute>
             } 
-          />
+          /> */}
           
           {/* Public Routes */}
           <Route path="/" element={
