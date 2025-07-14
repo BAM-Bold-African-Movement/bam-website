@@ -17,6 +17,7 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { MarkdownPreview } from './MarkdownPreview';
 import { Guide } from "./Guide";
 import { useAuth } from "../../contexts/AuthContext";
+import Sidebar from "../Dashboard/Sidebar"
 
 const extraOptions = [
     ["# ", "## ", "### "],
@@ -31,8 +32,10 @@ const extraOptions = [
 ];
 
 export const Editor = () => {
-    const { user } = useAuth();
+    const { user, isSuperAdmin } = useAuth();
     const [leftOption, setLeftOption] = useState(0);
+    const [activeSection, setActiveSection] = useState('blog');
+    const [sidebarOpen, setSidebarOpen] = useState(true);
     const [storeData, setStoreData] = useState(""); 
     const [titleData, setTitleData] = useState(""); 
     const [subTitleData, setSubTitleData] = useState(""); 
