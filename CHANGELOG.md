@@ -1,3 +1,37 @@
+# [1.7.0](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.6.0...v1.7.0) (2025-07-14)
+
+
+### Bug Fixes
+
+* dependency issues ([5a34332](https://github.com/BAM-Bold-African-Movement/bam-website/commit/5a343329270335fded62569e688732d87a102dca))
+* failure to load user correctly ([9ac0297](https://github.com/BAM-Bold-African-Movement/bam-website/commit/9ac0297884aab00fc1643b59f926d4fb3fedd1d8))
+* failure to resolve auth context file path ([aa7259a](https://github.com/BAM-Bold-African-Movement/bam-website/commit/aa7259a9dc1d69625981b1d5d09269505d6f974f))
+* failure to resolve auth context file path ([ed2da42](https://github.com/BAM-Bold-African-Movement/bam-website/commit/ed2da427078fc8d35d7d33795a19e9ef2fcd6e55))
+* failure to resolve blog service file path ([681c30e](https://github.com/BAM-Bold-African-Movement/bam-website/commit/681c30e7f303aac103000fcc0216c2d4fe7199e5))
+* helm error for not wrapping it at root level ([a96d41c](https://github.com/BAM-Bold-African-Movement/bam-website/commit/a96d41c201b8857083d2d341f57cf2918d15c84c))
+* poor error handling ([9e319f9](https://github.com/BAM-Bold-African-Movement/bam-website/commit/9e319f9f79c4102d6f935347b360afcad3286aa0))
+* proper handling of cancleing ([fb7979d](https://github.com/BAM-Bold-African-Movement/bam-website/commit/fb7979d9a6997c81c8efa263403edc9266322090))
+* rendering two component on same route ([62761d6](https://github.com/BAM-Bold-African-Movement/bam-website/commit/62761d6c1df39153c931e0e044f68a37cc670aff))
+* sticky header conflicting with navbar ([eac5668](https://github.com/BAM-Bold-African-Movement/bam-website/commit/eac5668dc5f7274887bf277639cc605b0e96e92c))
+* wrap auth provider in root ([03bca13](https://github.com/BAM-Bold-African-Movement/bam-website/commit/03bca13fed4c5066dac28b8e3c85df490a086c77))
+* wrong form of passing dates ([9f549bb](https://github.com/BAM-Bold-African-Movement/bam-website/commit/9f549bbb45520a215ef215921476871cee569b6d))
+* wrong referencing for getting post ([bf68d36](https://github.com/BAM-Bold-African-Movement/bam-website/commit/bf68d36c4074440f8db7b87d71b9092dfb29e6b4))
+
+
+### Features
+
+* added protected route ([9981e6d](https://github.com/BAM-Bold-African-Movement/bam-website/commit/9981e6d7a44662e01a752c98c7a45d3ad6675341))
+* blog post detail page ([230ed7e](https://github.com/BAM-Bold-African-Movement/bam-website/commit/230ed7e21fb90aa55c019af89e76a72174484f65))
+* comment out registration, it is not needed ([8c16a96](https://github.com/BAM-Bold-African-Movement/bam-website/commit/8c16a961fb25f0e7013357a4ad22b90d6f6278ad))
+* dashaboard now works with firebase with proper role ([a0c03c3](https://github.com/BAM-Bold-African-Movement/bam-website/commit/a0c03c3be42afdbccd31e0764aa177d2eab88661))
+* handle back to go back to blog ([2778a9d](https://github.com/BAM-Bold-African-Movement/bam-website/commit/2778a9d95b92d98e37b3164c9f1149f73b6964ea))
+* initailize firebase ([b3f06e9](https://github.com/BAM-Bold-African-Movement/bam-website/commit/b3f06e9188e8a443783b8bced9912e519a0cbb77))
+* integrate open-source editor with Firebase backend ([8d1f1b3](https://github.com/BAM-Bold-African-Movement/bam-website/commit/8d1f1b3b66a1bfd51ac1b0ac5ed546fc1f4a34bf))
+* proper auth, with services base on roles ([9e66440](https://github.com/BAM-Bold-African-Movement/bam-website/commit/9e66440addec93347508a8f08bb2b16b0377a056))
+* separate the sidebar and header into different components and update the dashboard to use navigation instead of the BlogPostForm ([aaec88f](https://github.com/BAM-Bold-African-Movement/bam-website/commit/aaec88fb9d32cc5e729b3efa11002cc4d35315a7))
+* update blog component with firebase integration ([5a6fd88](https://github.com/BAM-Bold-African-Movement/bam-website/commit/5a6fd88b308be963418d7e4f8f21658ffd13b134))
+* update login component to work with firebase ([d64f2a4](https://github.com/BAM-Bold-African-Movement/bam-website/commit/d64f2a430a9c6c7c88d5f6c8fd0e1ab3521e22fe))
+
 # [1.6.0](https://github.com/BAM-Bold-African-Movement/bam-website/compare/v1.5.0...v1.6.0) (2025-07-01)
 
 
