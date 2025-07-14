@@ -32,6 +32,20 @@ const Sidebar = ({ activeSection, setActiveSection, sidebarOpen, setSidebarOpen 
           </svg>
           Blog Management
         </button>
+
+        <button
+          onClick={() => setActiveSection('editor')}
+          className={`flex items-center w-full px-4 py-3 rounded-lg mb-2 ${
+            activeSection === 'editor' 
+              ? 'bg-yellow-500 text-white' 
+              : 'text-gray-300 hover:bg-gray-700'
+          }`}
+        >
+          <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+          </svg>
+          Create Post
+        </button>
         
         {/* Only show user management for super admin */}
         {isSuperAdmin() && (

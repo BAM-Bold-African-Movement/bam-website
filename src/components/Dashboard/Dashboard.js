@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import BlogService from '../../services/blogService';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import {Editor} from '../Editor/Editor';
 
 const Dashboard = () => {
   const { user, isSuperAdmin, isRegularAdmin, signup } = useAuth();
@@ -224,7 +225,7 @@ const Dashboard = () => {
               <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold text-white">Blog Management</h1>
                 <button
-                  onClick={() => navigate('/dashboard/editor')}
+                  onClick={() => setActiveSection('editor')}
                   className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors duration-300"
                 >
                   Create New Post
@@ -305,6 +306,11 @@ const Dashboard = () => {
                   </table>
                 </div>
               </div>
+            </div>
+          ) : activeSection === 'editor' ? (
+            // Editor Section
+            <div className="bg-gray-900 min-h-screen">
+              <Editor />
             </div>
           ) : (
             // User Management Section (only for super admin)
