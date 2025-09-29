@@ -34,7 +34,7 @@ export const useWalletTokens = (chainId: number | undefined): UseWalletTokensRet
   const [walletTokens, setWalletTokens] = useState<WalletToken[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const ERC20_ABI = erc20Abi.abi;
+  const ERC20_ABI = erc20Abi.abi as Abi;
 
   // Get native token balance
   const { data: nativeBalance, isLoading: nativeLoading } = useBalance({
@@ -118,7 +118,7 @@ export const useWalletTokens = (chainId: number | undefined): UseWalletTokensRet
         const symbol = symbolResult?.result as string | undefined;
         
         // Skip tokens with zero balance or missing data
-        if (balance && decimals !== undefined && symbol && balance > 0n) {
+        if (balance && decimals !== undefined && symbol && balance > BigInt(0)) {
           // Format the balance to a human-readable format
           const formattedBalance = (Number(balance) / 10 ** Number(decimals)).toFixed(4);
           
