@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useAccount, useNetwork } from 'wagmi';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useAccount } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useNativeDonation, useTokenDonation } from '../../services/donationService';
-import { 
-  fetchExchangeRate, 
-  convertToTokenAmount, 
-  getTokenSymbol,
-  getTokenInfo
-} from '../../utils/currencyUtils';
+import { fetchExchangeRate } from '../../utils/currencyUtils';
 import { useWalletTokens } from '../../hooks/useWalletTokens';
 
 const DonationDetailsForm = () => {
   // User account state
-  const { address, isConnected, chain } = useAccount();
+  const { isConnected, chain } = useAccount();
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   
@@ -62,34 +57,8 @@ const DonationDetailsForm = () => {
   const donationError = nativeDonationError || tokenDonationError;
   const transactionHash = nativeTransactionHash || tokenTransactionHash;
 
-  // Set initial token selection when wallet tokens load
-  useEffect(() => {
-    if (walletTokens.length > 0 && !selectedToken) {
-      setSelectedToken(walletTokens[0]);
-      updateExchangeRate(walletTokens[0].address);
-    }
-  }, [walletTokens]);
-  
-  // Update exchange rate when token selection changes
-  useEffect(() => {
-    if (chain?.id && selectedToken) {
-      updateExchangeRate(selectedToken.address);
-    }
-  }, [selectedToken, chain]);
-  
-  // Update USD equivalent when donation amount or exchange rate changes
-  useEffect(() => {
-    if (donationAmount && exchangeRate) {
-      // Convert token amount to USD
-      const usd = parseFloat(donationAmount) / exchangeRate;
-      setUsdEquivalent(usd.toFixed(2));
-    } else {
-      setUsdEquivalent("");
-    }
-  }, [donationAmount, exchangeRate]);
-
   // Function to get and update the exchange rate
-  const updateExchangeRate = async (tokenAddress) => {
+  const updateExchangeRate = useCallback(async (tokenAddress) => {
     if (!chain?.id) return;
     
     setLoadingRate(true);
@@ -102,7 +71,33 @@ const DonationDetailsForm = () => {
     } finally {
       setLoadingRate(false);
     }
-  };
+  }, [chain?.id]);
+
+  // Set initial token selection when wallet tokens load
+  useEffect(() => {
+    if (walletTokens.length > 0 && !selectedToken) {
+      setSelectedToken(walletTokens[0]);
+      updateExchangeRate(walletTokens[0].address);
+    }
+  }, [walletTokens, selectedToken, updateExchangeRate]);
+  
+  // Update exchange rate when token selection changes
+  useEffect(() => {
+    if (chain?.id && selectedToken) {
+      updateExchangeRate(selectedToken.address);
+    }
+  }, [selectedToken, chain?.id, updateExchangeRate]);
+  
+  // Update USD equivalent when donation amount or exchange rate changes
+  useEffect(() => {
+    if (donationAmount && exchangeRate) {
+      // Convert token amount to USD
+      const usd = parseFloat(donationAmount) / exchangeRate;
+      setUsdEquivalent(usd.toFixed(2));
+    } else {
+      setUsdEquivalent("");
+    }
+  }, [donationAmount, exchangeRate]);
   
   // Handle token selection change
   const handleTokenChange = (e) => {
@@ -208,7 +203,7 @@ const DonationDetailsForm = () => {
       // Redirect to confirmation page
       window.location.href = `/confirmation?tx=${transactionHash}`;
     }
-  }, [isSuccess, transactionHash]);
+  }, [isSuccess, transactionHash, donationAmount, selectedToken?.address, selectedToken?.symbol, usdEquivalent]);
   
   // Handle donation errors
   React.useEffect(() => {

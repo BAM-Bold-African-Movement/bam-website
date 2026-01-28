@@ -1,4 +1,4 @@
-import { useAccount, useReadContract, useWriteContract, useWaitForTransaction, useTransactionReceipt } from 'wagmi';
+import { useAccount, useReadContract, useWriteContract, useTransactionReceipt } from 'wagmi';
 import { parseEther, parseUnits, formatEther } from 'viem';
 import bamDonationAbi from '../abi/BAMDonation.json';
 import bamNftTrackerAbi from '../abi/BAMDonationNFTTracker.json';

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAccount } from 'wagmi';
-import LoginButton from '../Wallet/LoginButton';
-import SignupButton from '../Wallet/SignupButton';
 import { Menu, X } from 'lucide-react';
+import WalletWrapper from '../Wallet/WalletWrapper';
 
 const Navbar = () => {
   const location = useLocation();
   const [activeSection, setActiveSection] = useState('home');
-  const { address } = useAccount();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const scrollToSection = (sectionId) => {
@@ -64,17 +61,15 @@ const Navbar = () => {
   const NavItem = ({ onClick, active, children, className = '' }) => (
     <button 
       onClick={onClick}
-      className={`text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 py-2 px-3 relative w-full text-left md:text-center md:w-auto
-        ${active ? 'text-gray-900' : ''} ${className}`}
+      className={`relative text-gray-300 hover:text-[#CA8A04] font-medium transition-all duration-300 py-2 px-3 w-full text-left md:text-center md:w-auto ${active ? 'text-[#CA8A04]' : ''} ${className}`}
     >
       {children}
-      <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-500 transform transition-transform duration-300 
-        ${active ? 'scale-x-100' : 'scale-x-0'}`} />
+      <span className={`absolute left-0 bottom-0 w-full h-0.5 bg-[#CA8A04] transition-transform duration-300 origin-left ${active ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}></span>
     </button>
   );
 
   return (
-    <nav className="bg-white shadow-lg fixed w-full z-50">
+    <nav className="bg-gray-900 fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           {/* Logo Section */}
@@ -96,7 +91,7 @@ const Navbar = () => {
           <div className="flex items-center md:!hidden">
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-gray-600 hover:text-gray-900"
+              className="text-gray-300 hover:text-white"
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -107,55 +102,62 @@ const Navbar = () => {
           <div className="hidden md:!flex items-center space-x-4 lg:space-x-8">
             <NavItem 
               onClick={() => scrollToSection('home')} 
-              active={activeSection === 'home'}
+              active={activeSection === 'home' && location.pathname === '/'}
             >
               Home
             </NavItem>
             
             <NavItem 
               onClick={() => scrollToSection('features')} 
-              active={activeSection === 'features'}
+              active={activeSection === 'features' && location.pathname === '/'}
             >
               Features
             </NavItem>
             
             <NavItem 
               onClick={() => scrollToSection('services')} 
-              active={activeSection === 'services'}
+              active={activeSection === 'services' && location.pathname === '/'}
             >
               Services
             </NavItem>
             
             <Link 
               to="/blog" 
-              className={`text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 py-2 px-3 relative
-                ${location.pathname === '/blog' ? 'text-gray-900' : ''}`}
+              className={`relative text-gray-300 hover:text-[#CA8A04] font-medium transition-all duration-300 py-2 px-3 w-full md:w-auto ${location.pathname === '/blog' ? 'text-[#CA8A04]' : ''}`}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
               Blog
-              <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-500 transform transition-transform duration-300 ${location.pathname === '/blog' ? 'scale-x-100' : 'scale-x-0'}`} />
+              <span className={`absolute left-0 bottom-0 w-full h-0.5 bg-[#CA8A04] transition-transform duration-300 origin-left ${location.pathname === '/blog' ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}></span>
             </Link>
             
-            <NavItem 
-              onClick={() => scrollToSection('footer')} 
-              active={activeSection === 'footer'}
+            <Link 
+              to="/contact" 
+              className={`relative text-gray-300 hover:text-[#CA8A04] font-medium transition-all duration-300 py-2 px-3 w-full md:w-auto ${location.pathname === '/contact' ? 'text-[#CA8A04]' : ''}`}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
               Contact
-            </NavItem>
+              <span className={`absolute left-0 bottom-0 w-full h-0.5 bg-[#CA8A04] transition-transform duration-300 origin-left ${location.pathname === '/contact' ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}></span>
+            </Link>
 
-            <div className="flex items-center gap-2 lg:gap-3">
-               <LoginButton />
+            <div className="flex items-center gap-2 lg:gap-3 flex-nowrap">
+              {/* Connect Wallet as Button */}
+              <WalletWrapper
+                className="bg-[#CA8A04] text-white px-6 py-2 rounded-md hover:bg-[#A16207] transition-colors duration-300 font-medium whitespace-nowrap"
+                text="Connect Wallet"
+                withWalletAggregator={true}
+              />
             </div>
           </div>
         </div>
 
         {/* Mobile Menu Dropdown - Only visible when menu is open AND on mobile */}
         {isMobileMenuOpen && (
-          <div className="md:hidden py-2 absolute left-0 right-0 bg-white shadow-lg border-t">
+          <div className="md:hidden py-2 absolute left-0 right-0 bg-gray-800 shadow-lg border-t border-gray-700">
             <div className="flex flex-col items-start px-4">
               <NavItem 
                 onClick={() => scrollToSection('home')} 
                 active={activeSection === 'home'}
-                className="py-3 border-b border-gray-100 w-full"
+                className="py-3 border-b border-gray-700 w-full"
               >
                 Home
               </NavItem>
@@ -163,7 +165,7 @@ const Navbar = () => {
               <NavItem 
                 onClick={() => scrollToSection('features')} 
                 active={activeSection === 'features'}
-                className="py-3 border-b border-gray-100 w-full"
+                className="py-3 border-b border-gray-700 w-full"
               >
                 Features
               </NavItem>
@@ -171,32 +173,38 @@ const Navbar = () => {
               <NavItem 
                 onClick={() => scrollToSection('services')} 
                 active={activeSection === 'services'}
-                className="py-3 border-b border-gray-100 w-full"
+                className="py-3 border-b border-gray-700 w-full"
               >
                 Services
               </NavItem>
               
               <Link 
                 to="/blog" 
-                className={`text-gray-600 hover:text-gray-900 font-medium transition-all duration-300 hover:scale-105 py-3 border-b border-gray-100 w-full relative
-                  ${location.pathname === '/blog' ? 'text-gray-900' : ''}`}
+                className={`relative text-gray-300 hover:text-[#CA8A04] font-medium transition-all duration-300 py-3 border-b border-gray-700 w-full relative
+                  ${location.pathname === '/blog' ? 'text-[#CA8A04]' : ''}`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Blog
-                <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-500 transform transition-transform duration-300 ${location.pathname === '/blog' ? 'scale-x-100' : 'scale-x-0'}`} />
+                <span className={`absolute left-0 bottom-0 w-full h-0.5 bg-[#CA8A04] transition-transform duration-300 origin-left ${location.pathname === '/blog' ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}></span>
               </Link>
               
-              <NavItem 
-                onClick={() => scrollToSection('footer')} 
-                active={activeSection === 'footer'}
-                className="py-3 border-b border-gray-100 w-full mb-2"
+              <Link 
+                to="/contact" 
+                className={`relative text-gray-300 hover:text-[#CA8A04] font-medium transition-all duration-300 py-3 border-b border-gray-700 w-full relative
+                  ${location.pathname === '/contact' ? 'text-[#CA8A04]' : ''}`}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Contact
-              </NavItem>
+                <span className={`absolute left-0 bottom-0 w-full h-0.5 bg-[#CA8A04] transition-transform duration-300 origin-left ${location.pathname === '/contact' ? 'scale-x-100' : 'scale-x-0'} group-hover:scale-x-100`}></span>
+              </Link>
 
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 my-4 w-full">
-                <SignupButton />
-                {!address && <LoginButton />}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 my-4 w-full flex-nowrap">
+                {/* Connect Wallet as Button */}
+                <WalletWrapper
+                  className="bg-[#CA8A04] text-white px-6 py-2 rounded-md hover:bg-[#A16207] transition-colors duration-300 font-medium w-full text-center whitespace-nowrap"
+                  text="Connect Wallet"
+                  withWalletAggregator={true}
+                />
               </div>
             </div>
           </div>

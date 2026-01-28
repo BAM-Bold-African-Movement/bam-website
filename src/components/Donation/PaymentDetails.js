@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Checkout, CheckoutButton, CheckoutStatus } from '@coinbase/onchainkit/checkout';
+import { Checkout, CheckoutButton } from '@coinbase/onchainkit/checkout';
 import { CDP_API_KEY } from '../../utils/config';
-import { useAccount, useProvider } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 const PaymentDetailsForm = ({ 
     donorName, 
@@ -11,8 +11,7 @@ const PaymentDetailsForm = ({
     chargeId 
   }) => {
     const navigate = useNavigate();
-    const { address, isConnected, connector } = useAccount();
-    const provider = connector.getProvider;
+    const { address, isConnected } = useAccount();
 
     // Ensure wallet is connected before rendering checkout
     if (!isConnected || !address) {

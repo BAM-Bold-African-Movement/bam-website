@@ -1,14 +1,8 @@
-import React, { useState, useEffect, useParams } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { SERVER_URL } from '../../utils/config';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import DonationDetailsForm from '../../components/Donation/DonationDetails';
-import PaymentDetailsForm from '../../components/Donation/PaymentDetails';
 
 export default function DonationPage() {
-  const [step, setStep] = useState('details'); // 'details' or 'payment'
-  const navigate = useNavigate();
+  const [step] = useState('details'); // 'details' or 'payment'
 
   return (
     <div className="flex min-h-screen bg-gray-50">

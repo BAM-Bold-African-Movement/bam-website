@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import BlogPostForm from './BlogPostForm';
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState('blog'); // 'blog' or 'users'
@@ -138,21 +136,6 @@ const Dashboard = () => {
     });
   };
 
-  const handleNewUser = (e) => {
-    e.preventDefault();
-    const user = {
-      id: users.length + 1,
-      ...newUser
-    };
-    setUsers([...users, user]);
-    setShowNewUserForm(false);
-    setNewUser({
-      name: '',
-      email: '',
-      password: '',
-      status: 'Active'
-    });
-  };
 
   const handleEditUser = (user) => {
     setEditingUser(user);
@@ -196,23 +179,6 @@ const Dashboard = () => {
     });
   };
 
-  // Handle new post creation
-  const handleCreatePost = async (postData) => {
-    try {
-      // Add the post to your posts array
-      const newPostWithId = {
-        id: posts.length + 1,
-        ...postData,
-        status: 'Draft',
-        views: 0
-      };
-      setPosts([newPostWithId, ...posts]);
-      setShowNewPostForm(false);
-    } catch (error) {
-      console.error('Error creating post:', error);
-      alert('Failed to create post');
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-900">

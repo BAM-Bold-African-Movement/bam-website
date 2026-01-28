@@ -17,17 +17,12 @@ const Footer = () => {
               </li>
               <li>
                 <Link to="/rewards" className="text-gray-600 hover:text-gray-900 text-sm">
-                  Rewards
+                  Support
                 </Link>
               </li>
               <li>
                 <Link to="/earn" className="text-gray-600 hover:text-gray-900 text-sm">
-                  Earn
-                </Link>
-              </li>
-              <li>
-                <Link to="/referral" className="text-gray-600 hover:text-gray-900 text-sm">
-                  Referral Program
+                  Donate
                 </Link>
               </li>
             </ul>

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useAccount, useBalance, useContractReads, useReadContract } from 'wagmi';
+import { useState, useEffect, useMemo } from 'react';
+import { useAccount, useBalance, useReadContract } from 'wagmi';
 import { getNetworkConfig } from '../utils/currencyUtils';
 import erc20Abi from '../abi/IERC20.json';
 
@@ -24,9 +24,11 @@ export const useWalletTokens = (chainId) => {
 
   // Get supported tokens for the current chain
   const networkConfig = getNetworkConfig(chainId);
-  const supportedTokenAddresses = networkConfig 
-    ? Object.keys(networkConfig.supportedTokens) 
-    : [];
+  const supportedTokenAddresses = useMemo(() => {
+    return networkConfig 
+      ? Object.keys(networkConfig.supportedTokens) 
+      : [];
+  }, [networkConfig]);
 
   // Prepare contract calls for all token balances + symbols
   const contractCalls = supportedTokenAddresses.flatMap(tokenAddress => [

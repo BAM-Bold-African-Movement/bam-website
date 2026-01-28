@@ -1,7 +1,7 @@
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactNode } from 'react';
-import { base, baseSepolia } from 'viem/chains';
+
+import { baseSepolia } from 'viem/chains';
 import { WagmiProvider, createConfig, http } from 'wagmi';
 import { WC_PROJECT_ID } from '../../utils/config';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
@@ -17,38 +17,34 @@ const queryClient = new QueryClient();
 
 // Create the wagmi config outside of the component
 function createWagmiConfig() {
-  const projectId = WC_PROJECT_ID ?? '';
-  if (!projectId) {
-    const providerErrMessage =
-      'To connect to all Wallets you need to provide a WC_PROJECT_ID env variable';
-    throw new Error(providerErrMessage);
+  const projectId = WC_PROJECT_ID || 'YOUR_PROJECT_ID'; // Replace with your actual WalletConnect Project ID
+  
+  const wallets = [
+    {
+      groupName: 'Recommended Wallet',
+      wallets: [coinbaseWallet],
+    }
+  ];
+
+  // Only add WalletConnect-enabled wallets if projectId is available
+  if (projectId && projectId !== 'YOUR_PROJECT_ID') {
+    wallets.push({
+      groupName: 'Other Wallets',
+      wallets: [rainbowWallet, metaMaskWallet, walletConnectWallet],
+    });
   }
 
-  const connectors = connectorsForWallets(
-      [
-        {
-          groupName: 'Recommended Wallet',
-          wallets: [ coinbaseWallet ],
-        },
-        {
-          groupName: 'Other Wallets',
-          wallets: [rainbowWallet, metaMaskWallet, walletConnectWallet],
-        },
-      ],
-      {
-        appName: 'BAM',
-        projectId,
-      },
-    );
+  const connectors = connectorsForWallets(wallets, {
+    appName: 'BAM',
+    projectId,
+  });
 
   return createConfig({
-    chains: [/*base,*/ baseSepolia],
-    // turn off injected provider discovery
+    chains: [baseSepolia],
     multiInjectedProviderDiscovery: false,
     connectors,
     ssr: true,
     transports: {
-      /*[base.id]: http(),*/
       [baseSepolia.id]: http(),
     },
   });
